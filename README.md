@@ -1,21 +1,21 @@
 # Workflow Processor
 
-Проект вдохновленный [WorkflowCore](https://github.com/danielgerlag/workflow-core) и [ELSA](https://github.com/elsa-workflows/elsa-core) позволяющий создавать бизнес процессы при помощи кода. 
-Преимущества данного решения:
- * Задачи поддерживают внедрение зависимостей в конструкторе класса. (В отличии от ELSA)
- * Есть возможность настраивать переходы через соединениея (по аналогии с ELSA, что не доступно в WorkflowCore)
+Project insipred by [WorkflowCore](https://github.com/danielgerlag/workflow-core) and [ELSA](https://github.com/elsa-workflows/elsa-core) that allows you to build BPMN processes with C# code. 
+Pros:
+ * Steps (tasks) support DI in class constructor. (unlike ELSA)
+ * Build connections with connectors (just like in ELSA, unlike WorkflowCore)
 
-## Пример
-![Визуальное представление процесса](images/workflow_example.drawio.png)
-### Определение контекста
+## Example
+![Visualization](images/workflow_example.drawio.png)
+### Define context
 ```
-// Контекстные данные процесса
+// Context data of process
 public class Data : IContextData
 {
     public long Varialbe { get; set; }
 }
 ```
-### Определение процесса
+### Define process
 ```
 public class TestProcess : WorkflowBuilder<Data>
 {
@@ -36,12 +36,12 @@ public class TestProcess : WorkflowBuilder<Data>
 ```
 
 
-### Определение схемы процесса
+### Define process scheme
 ```
 public override Workflow Build()
 {
-    // Схема процесса
-    // Определеяем шаги
+    // Scheme
+    // Steps
     var start = Step<StartActivity>();
     //
     var logValue = Step<LogActivity<Data2>>(activity => activity.Log(context => "Значение: " + context.Varialbe));
@@ -54,7 +54,7 @@ public override Workflow Build()
     });
     var endActivity = Step<EndActivity>();
     
-    // Определяем соединения между шагами
+    // Conntections between steps
     Connections = new List<Connection>()
         {
             new Connection(start, logValue),
