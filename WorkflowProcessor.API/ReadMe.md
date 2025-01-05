@@ -1,0 +1,1 @@
+dotnet ef dbcontext script --output init.sql --project WorkflowProcessor.API
