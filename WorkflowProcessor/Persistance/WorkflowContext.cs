@@ -5,17 +5,12 @@ using WorkflowProcessor.Core;
 
 public class WorkflowContext : DbContext
 {
-    //public DbSet<Workflow> Workflows { get; set; }
     public DbSet<WorkflowExecutionPoint> WorkflowExecutionPoints { get; set; }
     public DbSet<WorkflowBookmark> WorkflowBookmarks { get; set; }
-    public DbSet<WorkflowInstance> WorkflowInstances { get; set; }
     public DbSet<UserTask> UserTasks { get; set; }
+    public DbSet<WorkflowInstance> WorkflowInstances { get; set; }
 
-    public WorkflowContext()
-    {
-
-    }
-    public WorkflowContext(DbContextOptions options) : base(options)
+    public WorkflowContext(DbContextOptions<WorkflowContext> options) : base(options)
     {
 
     }
@@ -30,84 +25,83 @@ public class WorkflowContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        //var workflow = modelBuilder.Entity<Workflow>();
-        //workflow.HasKey(x => new { x.Name, x.Version });
-        //workflow.Property(x => x.Name).HasColumnName("name");
-        //workflow.Property(x => x.Version).HasColumnName("version");
-
+        // Workflow Instance
         var workflowInstance = modelBuilder.Entity<WorkflowInstance>();
         workflowInstance.HasKey(x => x.Id);
         workflowInstance.Property(x => x.Id).HasColumnName("id").ValueGeneratedOnAdd();
-        workflowInstance.Property(x => x.Status).HasColumnName("status");
-        workflowInstance.Property(x => x.JsonData).HasColumnName("data").HasColumnType("jsonb");
-        workflowInstance.Ignore(x => x.Context);
 
-        workflowInstance.OwnsOne(w => w.Workflow,
+        workflowInstance
+            .HasOne(x => x.Parent)
+            .WithMany(x => x.Children)
+                .HasForeignKey(d => d.ParentId)
+                .HasConstraintName("parent_children_fk");
+
+        workflowInstance.Property(x => x.Name).HasColumnName("name");
+        workflowInstance.Property(x => x.Status).HasColumnName("status");
+        workflowInstance.Property(x => x.Initiator).HasColumnName("initiator");
+        workflowInstance.Property(x => x.ParentId).HasColumnName("parent_id");
+        // ContextData
+        workflowInstance.OwnsOne(x => x.Context, e =>
+        {
+            e.WithOwner(x => x.WorkflowInstance);
+            e.Property(x => x.JsonData).HasColumnName("data").HasColumnType("jsonb");
+            e.Ignore(x => x.DataObject);
+        });
+        
+        workflowInstance.OwnsOne(w => w.WorkflowInfo,
             o =>
             {
                 o.Property(p => p.Name).HasColumnName("workflow_name");
                 o.Property(p => p.Version).HasColumnName("workflow_version");
-                o.Ignore(p => p.ContextData);
-                o.Ignore(p => p.Scheme);
-                //o.Ignore(x => x.Scheme);
+                o.Ignore(p => p.IsAllowedToRunFromWeb);
             });
 
-        var workflowExPoint = modelBuilder.Entity<WorkflowExecutionPoint>();
-        workflowExPoint.HasKey(x => x.Id);
-        workflowExPoint.Property(x => x.Id).HasColumnName("id").ValueGeneratedOnAdd();
-        workflowExPoint.Property(x => x.Status).HasColumnName("status");
-        workflowExPoint.Property(x => x.StepId).HasColumnName("step_id");
-        workflowExPoint.Property(x => x.ActivityType).HasColumnName("activity_type");
+        // Execution Point
+        var workflowExecutionPoint = modelBuilder.Entity<WorkflowExecutionPoint>();
+        workflowExecutionPoint.HasKey(x => x.Id);
+        workflowExecutionPoint.Property(x => x.Id).HasColumnName("id").ValueGeneratedOnAdd();
+        workflowExecutionPoint.Property(x => x.Status).HasColumnName("status");
 
-        workflowExPoint.Property(x => x.WorkflowInstanceId).HasColumnName("workflow_instance_id");
-        workflowExPoint
+        workflowExecutionPoint.Property(x => x.StepId).HasColumnName("step_id");
+        workflowExecutionPoint.Property(x => x.ActivatedStepsId).HasColumnName("activated_steps_ids");
+        workflowExecutionPoint.Property(x => x.ActivityTypeName).HasColumnName("activity_type");
+
+        workflowExecutionPoint.Property(x => x.WorkflowInstanceId).HasColumnName("workflow_instance_id");
+        workflowExecutionPoint
             .HasOne(x => x.WorkflowInstance)
             .WithMany(x => x.WorkflowExecutionPoints)
             .HasForeignKey(x => x.WorkflowInstanceId);
 
-        workflowExPoint
+        workflowExecutionPoint
             .HasOne(x => x.WorkflowBookmark)
             .WithOne(x => x.WorkflowExecutionPoint)
             .HasForeignKey<WorkflowBookmark>(e => e.WorkflowExecutionPointId)
         .IsRequired();
     
-
-    var workflowBookmark = modelBuilder.Entity<WorkflowBookmark>();
+        // Bookmark
+        var workflowBookmark = modelBuilder.Entity<WorkflowBookmark>();
         workflowBookmark.HasKey(x => x.Id);
         workflowBookmark.Property(x => x.Id).HasColumnName("id").ValueGeneratedOnAdd();
         workflowBookmark.Property(x => x.Name).HasColumnName("name");
         workflowBookmark.Property(x => x.Status).HasColumnName("status");
+        workflowBookmark.Property(x => x.Type).HasColumnName("type");
+        workflowBookmark.Property(x => x.WorkflowChildId).HasColumnName("workflow_child_id");
         workflowBookmark.Property(x => x.WorkflowExecutionPointId).HasColumnName("workflow_execution_point_id");
 
+        workflowBookmark
+            .HasOne(x => x.WorkflowChild)
+            .WithOne()
+            .HasForeignKey<WorkflowBookmark>(e => e.WorkflowChildId);
+
+        // UserTask
         var userTask = modelBuilder.Entity<UserTask>();
-        userTask.HasKey(x => x.Id);
-        userTask.Property(x => x.Id).HasColumnName("id").ValueGeneratedOnAdd();
-        userTask.Property(x => x.DisplayName).HasColumnName("display_name");
+        userTask.HasKey(x => new { x.UserId, x.WorkflowBookmarkId });
         userTask.Property(x => x.UserId).HasColumnName("user_id");
-
-
-        userTask.OwnsOne(w => w.Metadata,
-            o =>
-            {
-                //o.Property(p => p.UserId).HasColumnName("user_id");
-                //o.Ignore(x => x.Scheme);
-            });
-
         userTask.Property(x => x.WorkflowBookmarkId).HasColumnName("workflow_bookmark_id");
+
         userTask
             .HasOne(x => x.WorkflowBookmark)
             .WithMany(x => x.UserTasks)
-            .HasForeignKey(x => x.WorkflowBookmarkId);
+            .HasForeignKey(e => e.WorkflowBookmarkId);
     }
-
-
-    //public class JsonDataValueGenerator : Microsoft.EntityFrameworkCore.ValueGeneration.ValueGenerator
-    //{
-    //    public override bool GeneratesTemporaryValues => false;
-
-    //    protected override object NextValue(EntityEntry entry)
-    //    {
-    //        return ((WorkflowInstance)entry.Entity).GetJsonContextValue();
-    //    }
-    //}
 }

@@ -10,26 +10,25 @@ Pros:
 ### Define context
 ```
 // Context data of process
-public class Data : IContextData
+[PolymorphicContext(typeof(Data2), "Data2")]
+public class Data2 : IContextData
 {
-    public long Varialbe { get; set; }
+    public long Varialbe { get; set; } = 0;
 }
 ```
 ### Define process
 ```
-public class TestProcess : WorkflowBuilder<Data>
+public class TestProcess2 : WorkflowBuilder<Data2>
 {
-    // Метаданные процесса
-    public TestProcess()
+    public TestProcess2()
     {
-        Name = "Test Process";
+        Name = "Example_Test_2";
         Version = 1;
     }
-    
+
     public override Workflow Build()
     {
-        // Схема процесса
-        ...
+        // ... Define scheme of the process
         return base.Build();
     }
 }
@@ -40,22 +39,17 @@ public class TestProcess : WorkflowBuilder<Data>
 ```
 public override Workflow Build()
 {
-    // Scheme
-    // Steps
-    var start = Step<StartActivity>();
     //
-    var logValue = Step<LogActivity<Data2>>(activity => activity.Log(context => "Значение: " + context.Varialbe));
+    var start = StepStart(); // You also can use Step<StartActivity>()
     //
-    var increaseValueByOne = Step<CodeActivity<Data2>>(activity => activity.Code(context => { context.Varialbe++; }));
-    var endCycle = Step<LogActivity>(activity => activity.Log("Значение >= 5"));
-    var ifStatement = Step<If<Data2>>(activity =>
-    {
-        activity.SetCondition(context => context.Varialbe >= 5);
-    });
-    var endActivity = Step<EndActivity>();
-    
-    // Conntections between steps
-    Connections = new List<Connection>()
+    var logValue = StepLog(activity => activity.Log(context => "Variable value: " + context.Data.Varialbe));
+    //
+    var increaseValueByOne = StepCode(activity => activity.Code(context => { context.Data.Varialbe++; }));
+    var endCycle = StepLog(activity => activity.Log("Variable value >= 5"));
+    var ifStatement = StepIf(context => context.Data.Varialbe >= 5);
+    var endActivity = StepEnd();
+
+    Scheme.Connections = new List<Connection>()
         {
             new Connection(start, logValue),
             new Connection(logValue, ifStatement),

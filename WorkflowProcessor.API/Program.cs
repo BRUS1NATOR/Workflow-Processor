@@ -1,5 +1,4 @@
 using MassTransit;
-using MassTransitExample.MasstransitWorkflow;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 using WorkflowProcessor.Extensions;
@@ -18,8 +17,7 @@ builder.Services.AddLogging(config =>
 builder.Services.AddDbContext<WorkflowContext>(x => x.UseNpgsql(@"Server=127.0.0.1;Port=5432;Database=myworkflow;User Id=postgres;Password=root;"));
 builder.Services.AddMassTransit(x =>
 {
-    x.AddConsumer<WorkflowStartConsumer>();
-    x.AddConsumer<WorkflowExecuteStepConsumer>();
+    x.AddWorkflowConsumers();
     x.UsingInMemory((context, cfg) =>
     {
         //var connectionString = new Uri("RabbitMQ_URL");
@@ -29,11 +27,8 @@ builder.Services.AddMassTransit(x =>
 
     });
 });
-
-builder.Services.AddWorkflow();
-builder.Services.AddTransient<WorkflowInstanceFactory>();
-builder.Services.AddTransient<WorkflowBookmarkService>();
-//builder.Services.AddHostedService<Worker>();
+builder.Services.AddTransient<IWorkflowUserService, WorkflowUserService>();
+builder.Services.AddWorkflowServices();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -45,8 +40,29 @@ builder.Services.AddHttpClient();
 builder.Services.AddOptions();
 
 
+//string CORS_POLICY = "SPA";
+//string CORS_URL = "http://localhost:5173";
+
+//builder.Services.AddCors(options =>
+//{
+//    options.AddPolicy(name: CORS_POLICY,
+//        policy =>
+//        {
+//            policy.WithOrigins(CORS_URL).AllowAnyHeader().AllowAnyMethod().AllowCredentials();
+//        });
+//});
+
 var app = builder.Build();
-app.AddWorkflows();
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<WorkflowContext>();
+    if (db.Database.GetPendingMigrations().Any())
+    {
+        await db.Database.MigrateAsync();
+    }
+}
+//app.AddExampleWorkflows();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -58,6 +74,7 @@ if (app.Environment.IsDevelopment())
 }
 //app.UseHttpsRedirection();
 
+//app.UseCors(CORS_POLICY);
 app.UseAuthorization();
 
 app.MapControllers();

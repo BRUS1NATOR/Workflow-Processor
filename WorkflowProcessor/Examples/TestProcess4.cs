@@ -2,39 +2,58 @@
 using WorkflowProcessor.Activities.Basic;
 using WorkflowProcessor.Core;
 using WorkflowProcessor.Core.Connections;
-namespace MassTransitExample.Examples
+using WorkflowProcessor.Persistance.Context;
+using WorkflowProcessor.Persistance.Context.Json;
+
+namespace WorkflowProcessor.Console.Examples
 {
-    public class TestProcess4 : WorkflowBuilder
+    [PolymorphicContext(typeof(Data4), "Data4")]
+    public class Data4 : IContextData
+    {
+        public long Varialbe { get; set; } = 0;
+    }
+    public class TestProcess4 : WorkflowBuilder<Data4>
     {
         public TestProcess4()
         {
-            Name = "Test 4";
+            Name = "Example_Test_4";
             Version = 1;
         }
         public override Workflow Build()
         {
-            var start = Step<StartActivity>(x => { });
             //
-            var log1 = Step<LogActivity>(x => x.Log("START"));
-            var userActivity = Step<UserActivity>(x =>
+            var start = StepStart(x =>
             {
-                x.SetUserId(9250);
-            }
-            ).WithId("userTask1");
+                x.Code(con =>
+                {
+                    con.WorkflowInstance.Name = "Привет мир!";
+                });
+            });
+            //
+            var logValue = Step<LogActivity<Data4>>(activity => activity.Log(context => "Log1: " + context.Data.Varialbe));
+            var logValue2 = Step<LogActivity<Data4>>(activity => activity.Log(context => "Log2: " + context.Data.Varialbe));
+            //
+            var subProcess = Step<SubprocessActivity<Data4, TestProcess2, Data2>>(activity =>
+            {
+                activity.SetBookmark(true);
+                activity.SetContextData(x =>
+                {
+                    return new Data2()
+                    {
+                        Varialbe = 1
+                    };
+                });
+            });
 
-            var log2 = Step<LogActivity>(x => x.Log("Пользователь завершил задачу log2!")).WithId("log2");
-            var log3 = Step<LogActivity>(x => x.Log("Пользователь завершил задачу log3!")).WithId("log3");
             var endActivity = Step<EndActivity>();
 
-            Connections = new List<Connection>()
-                {
-                    new Connection(start, log1),
-                    new Connection(log1, userActivity),
-                        new ConditionalConnection<string>(userActivity, log2, "log2"),
-                        new ConditionalConnection<string>(userActivity, log3, "log3"),
-                   new Connection(log2, endActivity),
-                   new Connection(log3, endActivity)
-                };
+            Scheme.Connections = new List<Connection>()
+            {
+                new Connection(start, logValue),
+                new Connection(logValue, subProcess),
+                new Connection(subProcess, logValue2),
+                new Connection(logValue2, endActivity)
+            };
 
             return base.Build();
         }

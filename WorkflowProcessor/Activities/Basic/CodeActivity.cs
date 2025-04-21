@@ -1,23 +1,36 @@
 ﻿using WorkflowProcessor.Core;
-using WorkflowProcessor.Core.Results;
+using WorkflowProcessor.Core.ExecutionResults;
 using WorkflowProcessor.Core.WorkflowElement;
 using WorkflowProcessor.Persistance.Context;
 
 namespace WorkflowProcessor.Activities.Basic
 {
-    public class CodeActivity<TContext> : WorkflowElement<TContext> where TContext : IContextData, new()
+    public class CodeActivity<TContextData> : WorkflowElement<TContextData>
+        where TContextData : IContextData, new()
     {
-        protected Action<TContext> ExecuteCode;
+        protected Action<Context<TContextData>>? ExecuteCode;
+        protected Func<Context<TContextData>, Task>? ExecuteCodeAsync;
 
-        public void Code(Action<TContext> ExecuteCode)
+        public void Code(Action<Context<TContextData>> ExecuteCode)
         {
             this.ExecuteCode = ExecuteCode;
         }
+        public void CodeAsync(Func<Context<TContextData>, Task> ExecuteCodeAsync)
+        {
+            this.ExecuteCodeAsync = ExecuteCodeAsync;
+        }
 
-        public override async Task<WorkflowResult> ExecuteAsync(IWorkflowInstance workflowInstance)
+        public override async Task<ActivityExecutionResult> ExecuteAsync(IWorkflowInstance workflowInstance)
         {
             var data = Data(workflowInstance);
-            ExecuteCode.Invoke(data);
+            if (ExecuteCode is not null)
+            {
+                ExecuteCode.Invoke(data);
+            }
+            if (ExecuteCodeAsync is not null)
+            {
+                await ExecuteCodeAsync.Invoke(data);
+            }
             return await base.ExecuteAsync(workflowInstance);
         }
     }

@@ -1,12 +1,14 @@
-﻿using WorkflowProcessor.Persistance.Context;
+﻿using System.Text.Json.Serialization;
+using WorkflowProcessor.Persistance.Context;
 
 namespace WorkflowProcessor.Core
 {
-    public class Workflow : IWorkflowInfo
+    public class Workflow : WorkflowInfo
     {
-        public string Name { get; set; }
-        public int Version { get; set; }
-        public Context ContextData { get; set; }
+        [JsonPropertyName("initialContext")]
+        public Context InitialContext { get; set; }
+
+        [JsonPropertyName("scheme")]
         public WorkflowScheme Scheme { get; set; } = new();
 
         public Workflow()

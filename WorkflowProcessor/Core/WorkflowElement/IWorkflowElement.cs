@@ -1,18 +1,16 @@
-﻿using WorkflowProcessor.Core.Results;
+﻿using WorkflowProcessor.Core.ExecutionResults;
 using WorkflowProcessor.Persistance.Context;
 
 namespace WorkflowProcessor.Core.WorkflowElement
 {
     public interface IWorkflowElement
     {
-        public void SetMetadata(WorkflowElementMetadata metadata);
-        public WorkflowElementMetadata? Metadata { get; }
-
-        public Task<WorkflowResult> ExecuteAsync(IWorkflowInstance instance);
+        public Task<ActivityExecutionResult> ExecuteAsync(IWorkflowInstance instance);
     }
 
-    public interface IWorkflowElement<TContext> : IWorkflowElement where TContext : IContextData, new()
+    public interface IWorkflowElement<TContextData> : IWorkflowElement
+        where TContextData : IContextData, new()
     {
-        public TContext Data(IWorkflowInstance instance);
+        public Context<TContextData> Data(IWorkflowInstance instance);
     }
 }

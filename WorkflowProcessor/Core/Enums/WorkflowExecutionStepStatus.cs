@@ -3,22 +3,22 @@
     public enum WorkflowExecutionStepStatus
     {
         /// <summary>
-        /// The workflow is currently executing.   
+        /// The step is currently executing.   
         /// </summary>
-        Executing,
+        Executing = 1,
 
         /// <summary>
-        /// The workflow is currently suspended and waiting for external stimuli to resume.   
+        /// The step suspended and waiting to resume.   
         /// </summary>
         Suspended,
 
         /// <summary>
-        /// The workflow completed successfully.
+        /// The step completed successfully.
         /// </summary>
         Finished,
 
         /// <summary>
-        /// The workflow has faulted.
+        /// The step has faulted.
         /// </summary>
         Faulted,
     }

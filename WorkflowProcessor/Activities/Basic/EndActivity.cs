@@ -1,5 +1,5 @@
 ﻿using WorkflowProcessor.Core;
-using WorkflowProcessor.Core.Results;
+using WorkflowProcessor.Core.ExecutionResults;
 using WorkflowProcessor.Core.WorkflowElement;
 
 namespace WorkflowProcessor.Activities.Basic
@@ -10,9 +10,9 @@ namespace WorkflowProcessor.Activities.Basic
         {
         }
 
-        public override async Task<WorkflowResult> ExecuteAsync(IWorkflowInstance instance)
+        public override async Task<ActivityExecutionResult> ExecuteAsync(IWorkflowInstance instance)
         {
-            return await Task.FromResult(WorkflowResult.Next(instance));
+            return await Task.FromResult(ActivityExecutionResult.Next(instance));
         }
     }
 }

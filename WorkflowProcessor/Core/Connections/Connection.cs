@@ -1,4 +1,6 @@
 ﻿using System.Text.Json.Serialization;
+using WorkflowProcessor.Core.Connections.Metadata;
+using WorkflowProcessor.Core.Step;
 
 namespace WorkflowProcessor.Core.Connections
 {
@@ -17,20 +19,36 @@ namespace WorkflowProcessor.Core.Connections
         /// </summary>
         /// <param name="source">The source endpoint.</param>
         /// <param name="target">The target endpoint.</param>
-        public Connection(WorkflowStep source, WorkflowStep target)
+        public Connection(WorkflowStep source, WorkflowStep target, IConnectionMetadata? metadata = null)
         {
             Source = source;
             Target = target;
+            SetMetadata(metadata);
         }
 
         /// <summary>
-        /// The source endpoint.
+        /// Начальное событие
         /// </summary>
+        [JsonPropertyName("source")]
         public WorkflowStep Source { get; set; } = default!;
 
         /// <summary>
-        /// The target endpoint.
+        /// Конечное событие
         /// </summary>
+        [JsonPropertyName("target")]
         public WorkflowStep Target { get; set; } = default!;
+
+        [JsonPropertyName("metadata")]
+        public IConnectionMetadata Metadata { get; set; }
+
+        protected void SetMetadata(IConnectionMetadata? metadata)
+        {
+            if (metadata is null)
+            {
+                Metadata = new ConnectionMetadata();
+                return;
+            }
+            Metadata = metadata;
+        }
     }
 }

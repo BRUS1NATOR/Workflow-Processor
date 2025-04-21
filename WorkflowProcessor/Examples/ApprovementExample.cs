@@ -1,10 +1,15 @@
 ﻿using WorkflowProcessor.Activities;
-using WorkflowProcessor.Activities.Basic;
+using WorkflowProcessor.Activities.Gateways;
 using WorkflowProcessor.Core;
 using WorkflowProcessor.Core.Connections;
+using WorkflowProcessor.Core.Connections.Metadata;
 using WorkflowProcessor.Persistance.Context;
-namespace MassTransitExample.Examples
+using WorkflowProcessor.Persistance.Context.Json;
+
+namespace WorkflowProcessor.Console.Examples
 {
+    //[JsonDerivedType(typeof(ApprovementData), "ApprovementData")]
+    [PolymorphicContext(typeof(ApprovementData), "ApprovementData")]
     public class ApprovementData : IContextData
     {
         public int? DocumentId { get; set; }
@@ -16,54 +21,59 @@ namespace MassTransitExample.Examples
     {
         public ApprovementExample()
         {
-            Name = "Approvement";
+            Name = "Example_Approvement";
             Version = 1;
         }
 
         public override Workflow Build()
         {
-            var start = Step<StartActivity>();
+            var start = StepStart((x) =>
+            {
+                x.SetWorkflowInstanceName("Привет мир");
+            });
             //
-            var userEditDocument = Step<CodeActivity<ApprovementData>>((activity) =>
+            var userEditDocument = StepCode((activity) =>
             {
                 activity.Code(x =>
                 {
-                    x.DocumentId = x.DocumentId == null ? new Random().Next(0, 100) : x.DocumentId;
+                    x.Data.DocumentId = x.Data.DocumentId == null ? new Random().Next(0, 100) : x.Data.DocumentId;
                 });
             });
 
-            var isGroup1Approved = Step<If<ApprovementData>>((activity) => { activity.SetCondition(x => x.IsGroup1Approved); });
-            var isGroup2Approved = Step<If<ApprovementData>>((activity) => { activity.SetCondition(x => x.IsGroup2Approved); });
+            var isGroup1Approved = Step<If<ApprovementData>>((activity) => { activity.SetCondition(x => x.Data.IsGroup1Approved); });
+            var isGroup2Approved = Step<If<ApprovementData>>((activity) => { activity.SetCondition(x => x.Data.IsGroup2Approved); });
 
-            var approvement1 = Step<UserActivity>(x =>
+            var approvement1 = Step<UserActivity<ApprovementData>>(x =>
             {
-                //x.SetName("Согласование документа групой 1");
-                x.SetUserId(9250);
+                x.SetBookmarkName(c => c.Data.DocumentId + " тест");
+                x.AddUser(9250);
+                x.AddUser(9251);
             }).WithId("approvementTask1");
 
-            var approvement2 = Step<UserActivity>(x =>
+            var approvement2 = Step<UserActivity<ApprovementData>>(x =>
             {
-                //x.SetName("Согласование документа групой 2");
-                x.SetUserId(9250);
+                x.SetBookmarkName("Согласование документа групой 2");
+                x.AddUser(1);
+                x.AddUser(2);
             }).WithId("approvementTask2");
 
-            var endActivity = Step<EndActivity>(x => { Console.WriteLine("Документ согласован!"); });
+            var endActivity = StepEnd(x => { System.Console.WriteLine("Документ согласован!"); });
 
-            Connections = new List<Connection>()
+            Scheme.Connections = new List<Connection>()
                 {
                     new Connection(start, userEditDocument),
                     new Connection(userEditDocument, isGroup1Approved),
                     //
                         new ConditionalConnection<ApprovementData, bool>(isGroup1Approved, isGroup2Approved, true),
                         new ConditionalConnection<ApprovementData, bool>(isGroup1Approved, approvement1, false),
-                            new ConditionalConnection<string>(approvement1, isGroup2Approved, "approved"),
-                            new ConditionalConnection<string>(approvement1, userEditDocument, "disapproved"),
-                            new ConditionalConnection<string>(approvement1, endActivity, "cancel"),
+                            new UserConnection<ApprovementData>(approvement1, isGroup2Approved, "approved", new ConnectionMetadata("Согласовать", "approved")),
+                            new UserConnection<ApprovementData>(approvement1, userEditDocument, "disapproved", x => x.DocumentId == 12, new ConnectionMetadata("Отказать", "disapproved")),
+                            new UserConnection<ApprovementData>(approvement1, endActivity, "cancel", new ConnectionMetadata("Прервать", "cancel")),
                     //
                         new ConditionalConnection<ApprovementData, bool>(isGroup2Approved, endActivity, true),
                         new ConditionalConnection<ApprovementData, bool>(isGroup2Approved, approvement2, false),
-                            new ConditionalConnection<string>(approvement2, endActivity, "approved"),
-                            new ConditionalConnection<string>(approvement2, userEditDocument, "disapproved"),
+                            new UserConnection<ApprovementData>(approvement2, endActivity, "approved"),
+                            new UserConnection<ApprovementData>(approvement2, userEditDocument, "disapproved"),
                 };
 
             return base.Build();

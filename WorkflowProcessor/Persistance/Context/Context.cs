@@ -1,45 +1,95 @@
 ﻿using System.Text.Json;
+using System.Text.Json.Serialization;
+using WorkflowProcessor.Core;
+using WorkflowProcessor.Persistance.Context.Json;
 
 namespace WorkflowProcessor.Persistance.Context
 {
     public class Context
     {
-        public virtual object? Data { get; set; }
+        [JsonIgnore]
+        public string JsonData { get; set; }
+
+        [JsonPropertyName("data")]
+        public virtual object? DataObject { get; set; }
+
+        [JsonIgnore]
+        public WorkflowInstance WorkflowInstance { get; set; }
+
+        public Context(string jsonData)
+        {
+            this.JsonData = jsonData;
+            if (!string.IsNullOrEmpty(jsonData))
+            {
+                SetContextValueFromJson(JsonData);
+            }
+        }
+
+        public Context(object data)
+        {
+            DataObject = data;
+        }
+
         public virtual void SetContextValueFromJson(string? jsonData)
         {
             if (jsonData is null)
             {
-                Data = new();
+                DataObject = new();
                 return;
             }
-            JsonSerializerOptions options = new() { AllowOutOfOrderMetadataProperties = true };
-            options.TypeInfoResolver = new PolymorphicTypeResolver();
-            Data = JsonSerializer.Deserialize<IContextData>(jsonData, options);
+            JsonSerializerOptions options = new() { /*AllowOutOfOrderMetadataProperties = true*/ };
+            options.TypeInfoResolver = new PolymorphicContextResolver();
+            try
+            {
+                DataObject = JsonSerializer.Deserialize<IContextData>(jsonData, options);
+            }
+            catch (Exception ex)
+            {
+            }
         }
 
-        public virtual string GetJsonContextValue()
+        /// <summary>
+        /// Сохраняет DataObject в Json
+        /// </summary>
+        /// <returns></returns>
+        public virtual void Save()
         {
-            JsonSerializerOptions options = new() { AllowOutOfOrderMetadataProperties = true };
-            options.TypeInfoResolver = new PolymorphicTypeResolver();
-            return JsonSerializer.Serialize(Data, options);
+            JsonData = JsonSerializer.Serialize(DataObject);
         }
     }
 
     public class Context<T> : Context where T : IContextData, new()
     {
-        public override object? Data { get => GenericData; set => GenericData = value == null ? default : (T)value; }
+        [JsonPropertyName("data")]
+        public override object? DataObject { get => Data; set => Data = value == null ? default : (T)value; }
 
-        public T? GenericData { get; set; } = new();
+        [JsonIgnore]
+        public T Data { get; set; } = new();
 
+        public Context(T data) : base("")
+        {
+            Data = data;
+        }
+
+        public Context(string jsonData) : base(jsonData)
+        {
+
+        }
+
+
+        public virtual void SetContextValue(T data)
+        {
+            Data = data;
+        }
 
         public override void SetContextValueFromJson(string? jsonData)
         {
             if (jsonData is null)
             {
-                GenericData = new T();
+                Data = new T();
                 return;
             }
-            GenericData = JsonSerializer.Deserialize<T>(jsonData);
+            Data = JsonSerializer.Deserialize<T>(jsonData);
         }
     }
 }

@@ -1,6 +1,5 @@
-﻿using MassTransitExample.Services;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using WorkflowProcessor.Core;
 using WorkflowProcessor.Services;
 
@@ -10,14 +9,17 @@ namespace WorkflowProcessor.API.Controllers
     [Route("/api/[controller]/[action]")]
     public class WorkflowController : ControllerBase
     {
-        private readonly ILogger<BookmarkController> _logger;
+        private readonly ILogger<WorkflowController> _logger;
+
+        private readonly IWorkflowUserService _workflowUserService;
         private readonly WorkflowContext _dbContext;
         private readonly WorkflowExecutor _workflowManager;
         private readonly WorkflowStorage _workflowStorage;
 
-        public WorkflowController(ILogger<BookmarkController> logger, WorkflowContext dbContext, WorkflowExecutor workflowManager, WorkflowStorage workflowStorage)
+        public WorkflowController(ILogger<WorkflowController> logger, IWorkflowUserService workflowUserService, WorkflowContext dbContext, WorkflowExecutor workflowManager, WorkflowStorage workflowStorage)
         {
             _logger = logger;
+            _workflowUserService = workflowUserService;
             _dbContext = dbContext;
             _workflowManager = workflowManager;
             _workflowStorage = workflowStorage;
@@ -26,19 +28,40 @@ namespace WorkflowProcessor.API.Controllers
         [HttpGet]
         public IEnumerable<Workflow> Get()
         {
-            return _workflowStorage.GetWorkflowList();
+            return _workflowStorage.Workflows;
         }
 
-        [HttpPost("/start")]
-        public async Task<IActionResult> StartWorkflow(string workflowId, int version)
+        [HttpGet("{id}")]
+        public ActionResult<Workflow> Get(string id)
         {
-            var workflow = _workflowStorage.GetWorkflow(workflowId, version);
+            var workflow = _workflowStorage.GetWorkflow(id, null);
             if (workflow is null)
             {
                 return NotFound();
             }
-            await _workflowManager.StartProcessAsync(workflow);
-            return Ok();
+            return Ok(workflow);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<ActionResult<WorkflowInstance>> Start([FromBody] WorkflowInfo workflowInfo)
+        {
+            var workflow = _workflowStorage.GetWorkflow(workflowInfo);
+            if (workflow is null)
+            {
+                return NotFound();
+            }
+            if (!workflow.IsAllowedToRunFromWeb)
+            {
+                return NotFound("Process is not allowed to be started from Web");
+            }
+            var userId = _workflowUserService.GetUserId(HttpContext.User);
+            if (userId is null)
+            {
+                return Unauthorized();
+            }
+            var result = await _workflowManager.StartAsync(workflow, userId);
+            return Ok(result);
         }
     }
 }

@@ -1,4 +1,7 @@
-﻿using WorkflowProcessor.Activities;
+﻿using System.Text.Json.Serialization;
+using WorkflowProcessor.Activities.Gateways;
+using WorkflowProcessor.Core.Connections.Metadata;
+using WorkflowProcessor.Core.Step;
 using WorkflowProcessor.Persistance.Context;
 
 namespace WorkflowProcessor.Core.Connections
@@ -7,51 +10,30 @@ namespace WorkflowProcessor.Core.Connections
     {
         public Func<T?, bool> Comparer { get; set; }
 
+        [JsonConstructor]
         public ConditionalConnection()
         {
-            
+
         }
 
-        public ConditionalConnection(WorkflowStep<Gateway<bool>> source, WorkflowStep target, T? value)
+        public ConditionalConnection(WorkflowStep<ExclusiveGateway<bool>> source, WorkflowStep target, T? value, IConnectionMetadata? metadata = null) : base(source, target, metadata)
         {
-            Source = source;
-            Target = target;
             Comparer = DefaultComparer(value);
         }
 
-        public ConditionalConnection(WorkflowStep<Gateway<bool>> source, WorkflowStep target, Func<T?, bool> comparer)
+        public ConditionalConnection(WorkflowStep<ExclusiveGateway<bool>> source, WorkflowStep target, Func<T?, bool> comparer, IConnectionMetadata? metadata = null) : base(source, target, metadata)
         {
-            Source = source;
-            Target = target;
             Comparer = comparer;
         }
 
 
-        public ConditionalConnection(WorkflowStep<If> source, WorkflowStep target, T? value)
+        public ConditionalConnection(WorkflowStep<If> source, WorkflowStep target, T? value, IConnectionMetadata? metadata = null) : base(source, target, metadata)
         {
-            Source = source;
-            Target = target;
             Comparer = DefaultComparer(value);
         }
 
-        public ConditionalConnection(WorkflowStep<If> source, WorkflowStep target, Func<T?, bool> comparer)
+        public ConditionalConnection(WorkflowStep<If> source, WorkflowStep target, Func<T?, bool> comparer, IConnectionMetadata? metadata = null) : base(source, target, metadata)
         {
-            Source = source;
-            Target = target;
-            Comparer = comparer;
-        }
-
-        public ConditionalConnection(WorkflowStep<UserActivity> source, WorkflowStep target, T? value)
-        {
-            Source = source;
-            Target = target;
-            Comparer = DefaultComparer(value);
-        }
-
-        public ConditionalConnection(WorkflowStep<UserActivity> source, WorkflowStep target, Func<T?, bool> comparer)
-        {
-            Source = source;
-            Target = target;
             Comparer = comparer;
         }
 
@@ -69,49 +51,49 @@ namespace WorkflowProcessor.Core.Connections
             return Comparer.Invoke((T)value);
         }
     }
-    public class ConditionalConnection<TContext, T> : ConditionalConnection<T>, IConditionalConnection where T : IComparable where TContext : IContextData, new()
+
+    public class ConditionalConnection<TContextData, T> : ConditionalConnection<T>, IConditionalConnection
+        where T : IComparable
+        where TContextData : IContextData, new()
     {
-        public ConditionalConnection(WorkflowStep<Gateway<TContext, T>> source, WorkflowStep target, T? value)
+
+        public ConditionalConnection(WorkflowStep<ParallelExclusiveGateway<TContextData, T>> source, WorkflowStep target, T? value, IConnectionMetadata? metadata = null) 
         {
             Source = source;
             Target = target;
+            SetMetadata(metadata);
             Comparer = DefaultComparer(value);
         }
 
-        public ConditionalConnection(WorkflowStep<Gateway<TContext, T>> source, WorkflowStep target, Func<T?, bool> comparer)
+        public ConditionalConnection(WorkflowStep<ExclusiveGateway<TContextData, T>> source, WorkflowStep target, T? value, IConnectionMetadata? metadata = null)
         {
             Source = source;
             Target = target;
+            SetMetadata(metadata);
+            Comparer = DefaultComparer(value);
+        }
+
+        public ConditionalConnection(WorkflowStep<ExclusiveGateway<TContextData, T>> source, WorkflowStep target, Func<T?, bool> comparer, IConnectionMetadata? metadata = null)
+        {
+            Source = source;
+            Target = target;
+            SetMetadata(metadata);
             Comparer = comparer;
         }
 
-
-        public ConditionalConnection(WorkflowStep<If<TContext>> source, WorkflowStep target, T? value)
+        public ConditionalConnection(WorkflowStep<If<TContextData>> source, WorkflowStep target, T? value, IConnectionMetadata? metadata = null)
         {
             Source = source;
             Target = target;
+            SetMetadata(metadata);
             Comparer = DefaultComparer(value);
         }
 
-        public ConditionalConnection(WorkflowStep<If<TContext>> source, WorkflowStep target, Func<T?, bool> comparer)
+        public ConditionalConnection(WorkflowStep<If<TContextData>> source, WorkflowStep target, Func<T?, bool> comparer, IConnectionMetadata? metadata = null)
         {
             Source = source;
             Target = target;
-            Comparer = comparer;
-        }
-
-
-        public ConditionalConnection(WorkflowStep<UserActivity<TContext>> source, WorkflowStep target, T? value)
-        {
-            Source = source;
-            Target = target;
-            Comparer = DefaultComparer(value);
-        }
-
-        public ConditionalConnection(WorkflowStep<UserActivity<TContext>> source, WorkflowStep target, Func<T?, bool> comparer)
-        {
-            Source = source;
-            Target = target;
+            SetMetadata(metadata);
             Comparer = comparer;
         }
     }

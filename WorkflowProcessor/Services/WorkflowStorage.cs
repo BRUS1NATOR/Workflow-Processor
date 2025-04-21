@@ -1,4 +1,6 @@
-﻿using WorkflowProcessor.Core;
+﻿using System.Reflection;
+using WorkflowProcessor.Core;
+using WorkflowProcessor.Persistance.Context.Json;
 
 namespace WorkflowProcessor.Services
 {
@@ -8,22 +10,29 @@ namespace WorkflowProcessor.Services
 
         public void AddWorkflow<T>() where T : WorkflowBuilder, new()
         {
+            if (typeof(T).BaseType.IsGenericType)
+            {
+                foreach (var generic in typeof(T).BaseType.GetGenericArguments())
+                {
+                    var polymorphicAttribute = generic.GetCustomAttribute<PolymorphicContextAttribute>();
+                    if (polymorphicAttribute is not null)
+                    {
+                        PolymorphicContext.DerivedTypes.Add(polymorphicAttribute.GetJsonDerivedType());
+                    }
+                }
+            }
             Workflows.Add(new T().Build());
         }
 
-        public IEnumerable<Workflow> GetWorkflowList()
-        {
-            return Workflows;
-        }
 
-        public Workflow? GetWorkflow(IWorkflowInfo workflowInfo)
+        public Workflow? GetWorkflow(WorkflowInfo workflowInfo)
         {
             return GetWorkflow(workflowInfo.Name, workflowInfo.Version);
         }
 
         public Workflow? GetWorkflow(IWorkflowInstance instance)
         {
-            return GetWorkflow(instance.Workflow);
+            return GetWorkflow(instance.WorkflowInfo);
         }
 
         public Workflow? GetWorkflow(string name, int? version)

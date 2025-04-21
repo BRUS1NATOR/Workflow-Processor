@@ -1,8 +1,7 @@
 ﻿using MassTransit;
-using Microsoft.EntityFrameworkCore.Query.Internal;
-using WorkflowProcessor.Core;
+using WorkflowProcessor.MasstransitWorkflow.Models;
 
-namespace MassTransitExample
+namespace WorkflowProcessor.MasstransitWorkflow
 {
     public class WorkflowSender
     {
@@ -17,34 +16,15 @@ namespace MassTransitExample
         {
             await _bus.Publish(message);
         }
+
+        public async Task SendFinish(WorkflowInstanceFinishMessage message)
+        {
+            await _bus.Publish(message);
+        }
+
         public async Task SendExecuteNext(WorkflowExecuteStep message)
         {
             await _bus.Publish(message);
         }
-    }
-
-    public class WorkflowExecuteStep
-    {
-        public int WorkflowInstanceId { get; set; }
-        public string StepId { get; set; }
-        public int? PreviousExecutionPointId { get; set; }
-
-        public WorkflowExecuteStep()
-        {
-            
-        }
-
-        public WorkflowExecuteStep(int workflowInstanceId, string nextStepId, int? previousExecutionPointId = null)
-        {
-            WorkflowInstanceId = workflowInstanceId;
-            StepId = nextStepId;
-            PreviousExecutionPointId = previousExecutionPointId;
-        }
-    }
-
-    public class WorkflowStartMessage
-    {
-        public string WorkflowName { get; set; }
-        public int? Version { get; set; }
     }
 }

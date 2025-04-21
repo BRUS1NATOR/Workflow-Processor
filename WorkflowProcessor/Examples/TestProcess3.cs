@@ -1,10 +1,14 @@
 ﻿using WorkflowProcessor.Activities;
-using WorkflowProcessor.Activities.Basic;
+using WorkflowProcessor.Activities.Gateways;
 using WorkflowProcessor.Core;
 using WorkflowProcessor.Core.Connections;
 using WorkflowProcessor.Persistance.Context;
-namespace MassTransitExample.Examples
+using WorkflowProcessor.Persistance.Context.Json;
+
+namespace WorkflowProcessor.Console.Examples
 {
+    [PolymorphicContext(typeof(Data3), "Data3")]
+
     public class Data3 : IContextData
     {
         public string Varialbe { get; set; } // = "ABC";
@@ -13,23 +17,23 @@ namespace MassTransitExample.Examples
     {
         public TestProcess3()
         {
-            Name = "Test 3";
+            Name = "Example_Test_3";
             Version = 1;
         }
         public override Workflow Build()
         {
             //
-            var start = Step<StartActivity>(x => { });
-            var logValue = Step<LogActivity<Data3>>(x => x.Log(context => context.Varialbe));
+            var start = StepStart();
+            var logValue = Step<LogActivity<Data3>>(x => x.Log(context => context.Data.Varialbe));
             var log1 = Step<LogActivity>(x => x.Log("Значение равно A"));
             var log2 = Step<LogActivity>(x => x.Log("Значение равно B"));
             var log3 = Step<LogActivity>(x => x.Log("Значение равно C"));
             var log4 = Step<LogActivity>(x => x.Log("Значение начинается с буквы А"));
             var log5 = Step<LogActivity>(x => x.Log("Значение любое"));
-            var stringGateway = Step<Gateway<Data3, string>>(activity => activity.SetCondition(x => x.Varialbe));
-            var endLogActivity = Step<EndActivity>();
+            var stringGateway = Step<ExclusiveGateway<Data3, string>>(activity => activity.SetCondition(x => x.Data.Varialbe));
+            var endLogActivity = StepEnd();
 
-            Connections = new List<Connection>()
+            Scheme.Connections = new List<Connection>()
                 {
                     new Connection(start, logValue),
                     new Connection(logValue, stringGateway),

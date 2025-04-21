@@ -4,4 +4,10 @@
     {
         public bool Compare(object? value);
     }
+
+    public interface IUserConnection : IConnection
+    {
+        public string Connector { get; set; }
+        public bool Compare(string connector, object context);
+    }
 }
