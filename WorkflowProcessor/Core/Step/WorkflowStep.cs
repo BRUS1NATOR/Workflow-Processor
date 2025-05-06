@@ -1,10 +1,11 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Reflection;
+using System.Text.Json.Serialization;
+using WorkflowProcessor.Activities;
 using WorkflowProcessor.Core.WorkflowElement;
 using WorkflowProcessor.Persistance.Context;
 
 namespace WorkflowProcessor.Core.Step
 {
-
     public abstract class WorkflowStep : IWorkflowStepInfo
     {
         [JsonPropertyName("activityId")]
@@ -15,6 +16,9 @@ namespace WorkflowProcessor.Core.Step
 
         [JsonIgnore]
         public virtual Type ActivityType => typeof(IWorkflowElement);
+
+        [JsonPropertyName("baseActivityType")]
+        public virtual BaseAcitivityType BaseActivityType => BaseAcitivityType.Unknown;
 
         public WorkflowStepMetadata? Metadata { get; set; }
 
@@ -48,6 +52,19 @@ namespace WorkflowProcessor.Core.Step
         }
 
         public override Type ActivityType => typeof(TWorkflowElement);
+
+        public override BaseAcitivityType BaseActivityType 
+        { 
+            get 
+            {
+                var attribute = ActivityType.GetCustomAttribute<ActivityTypeAttribute>(true);
+                if (attribute is null)
+                {
+                    return base.BaseActivityType;
+                }
+                return attribute.ActivityType;
+            } 
+        }
 
         public WorkflowStep() : base()
         {

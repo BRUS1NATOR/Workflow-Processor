@@ -1,11 +1,12 @@
-﻿using Microsoft.Extensions.Logging;
-using WorkflowProcessor.Core;
+﻿using WorkflowProcessor.Core;
 using WorkflowProcessor.Core.ExecutionResults;
+using WorkflowProcessor.Core.Step;
 using WorkflowProcessor.Core.WorkflowElement;
 using WorkflowProcessor.Persistance.Context;
 
 namespace WorkflowProcessor.Activities.Basic
 {
+    [ActivityType(BaseAcitivityType.SleepActivity)]
     public class SleepActivity<TContextData> : WorkflowElement<TContextData>
         where TContextData : IContextData, new()
     {

@@ -53,6 +53,7 @@ namespace WorkflowProcessor.Services
             {
                 workflowExecutionResult = new ActivityExecutionResultWithValue()
                 {
+                    StatusCode = ExecutionResultStatusCode.Next,
                     WorkflowInstanceId = bookmark.WorkflowExecutionPoint.WorkflowInstanceId
                 };
             }
@@ -61,7 +62,7 @@ namespace WorkflowProcessor.Services
                 workflowExecutionResult.WorkflowInstanceId = bookmark.WorkflowExecutionPoint.WorkflowInstanceId;
             }
 
-            var executionResult = await _workflowExecutor.ProcessExecutionResultAsync(bookmark.WorkflowExecutionPoint.WorkflowInstance, bookmark.WorkflowExecutionPoint, workflowExecutionResult);
+            var executionResult = await _workflowExecutor.CompleteBookmark(bookmark, workflowExecutionResult);
             if (executionResult.IsSuccess)
             {
                 bookmark.Status = Core.Enums.WorkflowBookmarkStatus.Finished;

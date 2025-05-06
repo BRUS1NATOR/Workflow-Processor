@@ -54,7 +54,7 @@ namespace WorkflowProcessor.API.Controllers
                     .WhereIf(filter.Status != null, x => x.Status == filter.Status)
                     .WhereIf(filter.Type != null, x => x.Type == filter.Type)
                     .WhereIf(filter.Id != null, x => x.Id == filter.Id)
-                    .WhereIf(filter.Name != null, x => x.Name != null && x.Name.Contains(filter.Name))
+                    .WhereIf(filter.Name != null, x => x.Name != null && x.Name.Contains(filter.Name!))
                 .ToListAsync();
         }
 

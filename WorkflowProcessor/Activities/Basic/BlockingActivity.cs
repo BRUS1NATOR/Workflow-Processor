@@ -9,6 +9,7 @@ namespace WorkflowProcessor.Activities.Basic
     {
     }
 
+    [ActivityType(BaseAcitivityType.BlockingActivity)]
     public class BlockingActivity : WorkflowElement, IBlockingActivity
     {
         private string? _bookMarkName;
@@ -27,7 +28,7 @@ namespace WorkflowProcessor.Activities.Basic
 
         private string GetBookmarkName(IWorkflowInstance wfInstance)
         {
-            if(_bookMarkName is not null)
+            if (_bookMarkName is not null)
             {
                 return _bookMarkName;
             }
@@ -44,9 +45,10 @@ namespace WorkflowProcessor.Activities.Basic
             return await Task.FromResult(ActivityExecutionBlockingResult.Bookmark(wfInstance, GetBookmarkName(wfInstance)));
         }
     }
-        
-    public class BlockingActivity<TContextData> : WorkflowElement<TContextData>, IBlockingActivity 
-        where TContextData : IContextData, new ()
+
+    [ActivityType(BaseAcitivityType.BlockingActivity)]
+    public class BlockingActivity<TContextData> : WorkflowElement<TContextData>, IBlockingActivity
+        where TContextData : IContextData, new()
     {
         protected Func<Context<TContextData>, string>? _bookmarkNameFunc;
 

@@ -2,7 +2,6 @@
 
 namespace WorkflowProcessor.Activities.Gateways
 {
-
     public class If : ExclusiveGateway<bool>
     {
 

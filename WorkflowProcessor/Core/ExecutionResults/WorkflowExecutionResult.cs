@@ -3,7 +3,7 @@
 namespace WorkflowProcessor.Core.ExecutionResults
 {
 
-    public class WorkflowExecutionResult : IResult
+    public class WorkflowExecutionResult : IWorkflowResult
     {
         [JsonPropertyName("isSuccess")]
         public bool IsSuccess { get; set; } = true;

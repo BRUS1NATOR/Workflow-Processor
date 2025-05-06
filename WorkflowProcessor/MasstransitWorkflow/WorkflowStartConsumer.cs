@@ -26,7 +26,7 @@ namespace WorkflowProcessor.MasstransitWorkflow
                 _logger.LogWarning($"WorkflowIsntance with name: {context.Message.WorkflowName} and version: {context.Message.Version} not found");
                 return;
             }
-            await _workflowManager.StartAsync(workflow);
+            await _workflowManager.StartProcessAsync(workflow);
         }
     }
 }

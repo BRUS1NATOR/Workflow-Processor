@@ -10,4 +10,11 @@ namespace WorkflowProcessor.API.Models
         public WorkflowBookmarkStatus? Status { get; set; }
         public string? Name { get; set; }
     }
+
+
+    public class WorkflowInstanceFilter
+    {
+        public long? Id { get; set; }
+        public string? Name { get; set; }
+    }
 }

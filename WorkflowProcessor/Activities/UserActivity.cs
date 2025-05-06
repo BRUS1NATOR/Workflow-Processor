@@ -1,12 +1,13 @@
-﻿using System.Collections.Generic;
-using WorkflowProcessor.Activities.Basic;
+﻿using WorkflowProcessor.Activities.Basic;
 using WorkflowProcessor.Activities.Gateways;
 using WorkflowProcessor.Core;
 using WorkflowProcessor.Core.ExecutionResults;
+using WorkflowProcessor.Core.Step;
 using WorkflowProcessor.Persistance.Context;
 
 namespace WorkflowProcessor.Activities
 {
+    [ActivityType(BaseAcitivityType.UserActivity)]
     public class UserActivity<TContextData> : ExclusiveGateway<TContextData, string>, IBlockingActivity
         where TContextData : IContextData, new()
     {
@@ -38,7 +39,7 @@ namespace WorkflowProcessor.Activities
         public override async Task<ActivityExecutionResult> ExecuteAsync(IWorkflowInstance context)
         {
             var data = Data(context);
-            if(_getUsersFunction is not null)
+            if (_getUsersFunction is not null)
             {
                 Users.AddRange(_getUsersFunction.Invoke(data));
             }

@@ -33,11 +33,13 @@ namespace WorkflowProcessor.Core
         }
 
         /// <summary>
-        /// Запуск процесса с данными
+        /// Start process
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <typeparam name="TContext"></typeparam>
-        /// <param name="contextData"></param>
+        /// <typeparam name="T">Process type</typeparam>
+        /// <typeparam name="TContext">Process context type</typeparam>
+        /// <param name="contextData">Initial context data</param>
+        /// <param name="initiator">Initiator (user id)</param>
+        /// <param name="parent">Parent of new workflow instance</param>
         /// <returns></returns>
         public async Task<WorkflowInstance> StartProcessAsync<T, TContext>(TContext? contextData, long? initiator = null, IWorkflowInstance? parent = null)
             where T : WorkflowBuilder<TContext>, new()
@@ -48,20 +50,29 @@ namespace WorkflowProcessor.Core
             {
                 process.InitialContext.DataObject = contextData;
             }
-            return await StartAsync(process, initiator, parent);
+            return await StartProcessAsync(process, initiator, parent);
         }
 
         /// <summary>
-        /// Запуск процесса
+        /// Start process
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T">Process type</typeparam>
+        /// <param name="initiator">Initiator (user id)</param>
+        /// <param name="parent">Parent of new workflow instance</param>
         /// <returns></returns>
         public async Task<WorkflowInstance> StartProcessAsync<T>(long? initiator = null, IWorkflowInstance? parent = null) where T : WorkflowBuilder, new()
         {
-            return await StartAsync(new T().Build(), null, parent);
+            return await StartProcessAsync(new T().Build(), null, parent);
         }
 
-        public async Task<WorkflowInstance> StartAsync(Workflow workflow, long? initiator = null, IWorkflowInstance? parent = null)
+        /// <summary>
+        /// Start process
+        /// </summary>
+        /// <param name="workflow">Workflow</param>
+        /// <param name="initiator">Initiator (user id)</param>
+        /// <param name="parent">Parent of new workflow instance</param>
+        /// <returns></returns>
+        public async Task<WorkflowInstance> StartProcessAsync(Workflow workflow, long? initiator = null, IWorkflowInstance? parent = null)
         {
             // Создаем Instance
             var workflowInstance = new WorkflowInstance();
@@ -92,17 +103,18 @@ namespace WorkflowProcessor.Core
             return workflowInstance;
         }
 
-
         public async Task<WorkflowExecutionResult> ExecuteAsync(IWorkflowInstance workflowInstance, WorkflowExecuteStep executeNext)
         {
             var workflow = _workflowStorage.GetWorkflow(workflowInstance.WorkflowInfo);
 
             var previousExecutionPoint = _dbContext.WorkflowExecutionPoints.First(x => x.Id == executeNext.PreviousExecutionPointId);
             previousExecutionPoint.Status = WorkflowExecutionStepStatus.Finished;
+            await _dbContext.SaveChangesAsync();
 
             var nextStep = workflow.Scheme.Elements.First(x => x.StepId == executeNext.StepId);
 
-            if (typeof(IParallelExclusiveGatewayEnd).IsAssignableFrom(nextStep.ActivityType))
+            if(nextStep.BaseActivityType == Activities.BaseAcitivityType.ParallelGatewayEnd)
+            //if (typeof(IParallelExclusiveGatewayEnd).IsAssignableFrom(nextStep.ActivityType))
             { 
                 var closeGatewayActivity = (ParallelExclusiveGatewayEnd)ActivatorUtilities.CreateInstance(_serviceProvider, nextStep.ActivityType);
                 nextStep.Setup(closeGatewayActivity, workflowInstance.Context);
@@ -110,15 +122,18 @@ namespace WorkflowProcessor.Core
                 var startGatewayStep = workflow.Scheme.Elements.First(x => x.StepId == closeGatewayActivity.GatewayStartStepId);
                 //
                 var incomingSteps = workflow.Scheme.GetIncomingSteps(nextStep);
+                // ids of activities that must be finished
                 var activitiesToFinishIds = incomingSteps.Select(x => x.StepId);
 
-                // Execution point of parallel gateway (start)
+                // Execution point of start parallel gateway
                 var parallelExecutionPoint = _dbContext.WorkflowExecutionPoints
                     .Where(x => x.WorkflowInstanceId == workflowInstance.Id && x.ActivityTypeName == startGatewayStep.ActivityTypeName)
                     .OrderByDescending(x => x.Id)
                     .FirstOrDefault();
 
-                var execPoins = _dbContext.WorkflowExecutionPoints.Where(x => x.WorkflowInstanceId == workflowInstance.Id && activitiesToFinishIds.Contains(x.StepId));
+                var execPoins = _dbContext.WorkflowExecutionPoints.Where(x => x.WorkflowInstanceId == workflowInstance.Id 
+                    && activitiesToFinishIds.Contains(x.StepId) 
+                    && x.Status == WorkflowExecutionStepStatus.Finished);
 
                 if (execPoins.Count() != (parallelExecutionPoint is null ? 0 : parallelExecutionPoint.ActivatedStepsId.Count()))
                 {
@@ -145,7 +160,7 @@ namespace WorkflowProcessor.Core
             {
                 _logger.LogInformation(currentStep.Metadata.ElementDisplayName);
             }
-            var executionResult = await ExecuteStep(workflowInstance, currentStep);
+            var executionResult = await ExecuteStepAsync(workflowInstance, currentStep);
 
             workflowInstance.Context.Save();
             await _dbContext.SaveChangesAsync();
@@ -153,7 +168,15 @@ namespace WorkflowProcessor.Core
             return await ProcessExecutionResultAsync(workflow, workflowInstance, executionPoint, executionResult);
         }
 
-        public async Task<WorkflowExecutionResult> ProcessExecutionResultAsync(IWorkflowInstance workflowInstance, WorkflowExecutionPoint executionPoint, ActivityExecutionResult executionResult)
+        private async Task<ActivityExecutionResult> ExecuteStepAsync(IWorkflowInstance workflowInstance, WorkflowStep step)
+        {
+            var workflowElement = (IWorkflowElement)ActivatorUtilities.CreateInstance(_serviceProvider, step.ActivityType);
+            step.Setup(workflowElement, workflowInstance.Context);
+
+            return await workflowElement.ExecuteAsync(workflowInstance);
+        }
+
+        private async Task<WorkflowExecutionResult> ProcessExecutionResultAsync(IWorkflowInstance workflowInstance, WorkflowExecutionPoint executionPoint, ActivityExecutionResult executionResult)
         {
             var workflow = _workflowStorage.GetWorkflow(workflowInstance);
             if (workflow is null)
@@ -163,9 +186,19 @@ namespace WorkflowProcessor.Core
             return await ProcessExecutionResultAsync(workflow, workflowInstance, executionPoint, executionResult);
         }
 
-        public async Task<WorkflowExecutionResult> ProcessExecutionResultAsync(Workflow workflow, IWorkflowInstance workflowInstance, WorkflowExecutionPoint executionPoint, ActivityExecutionResult executionResult)
+        private async Task<WorkflowExecutionResult> ProcessExecutionResultAsync(Workflow workflow, IWorkflowInstance workflowInstance, WorkflowExecutionPoint executionPoint, ActivityExecutionResult executionResult)
         {
-
+            if (executionResult.StatusCode == ExecutionResultStatusCode.Finish)
+            {
+                workflowInstance.Status = WorkflowInstanceStatus.Finished;
+                executionPoint.Status = WorkflowExecutionStepStatus.Finished;
+                await _dbContext.SaveChangesAsync();
+                _logger.LogInformation($"Process {workflowInstance.Name} completed");
+                // Send bookmark complete to parent
+                await WorkflowInstanceFinishedAsync(workflowInstance);
+                //
+                return new WorkflowExecutionResult(true, "Process completed");
+            }
             if (executionResult is IActivityExecutionParallelResult parallelResult)
             {
                 return await ProcessParallelResult(workflow, workflowInstance, executionPoint, parallelResult);
@@ -186,16 +219,6 @@ namespace WorkflowProcessor.Core
                 return new WorkflowExecutionResult(false, errorMessage);
             }
             executionPoint.ActivatedStepsId = [nextStep.StepId];
-            if (nextStep == workflow.Scheme.End)
-            {
-                workflowInstance.Status = WorkflowInstanceStatus.Finished;
-                await _dbContext.SaveChangesAsync();
-                _logger.LogInformation($"Process {workflowInstance.Name} completed");
-                // Send bookmark complete to parent
-                await WorkflowInstanceFinishedAsync(workflowInstance);
-                return new WorkflowExecutionResult(true, "Process completed");
-            }
-
             await _dbContext.SaveChangesAsync();
             await ProceedAsync(workflowInstance, executionPoint, nextStep);
             return new WorkflowExecutionResult(true);
@@ -235,15 +258,7 @@ namespace WorkflowProcessor.Core
             return new WorkflowExecutionResult(true);
         }
 
-        private async Task<ActivityExecutionResult> ExecuteStep(IWorkflowInstance workflowInstance, WorkflowStep step)
-        {
-            var workflowElement = (IWorkflowElement)ActivatorUtilities.CreateInstance(_serviceProvider, step.ActivityType);
-            step.Setup(workflowElement, workflowInstance.Context);
-
-            return await workflowElement.ExecuteAsync(workflowInstance);
-        }
-
-        public async Task ProceedAsync(IWorkflowInstance workflowInstance, WorkflowExecutionPoint executionPoint, WorkflowStep nextStep)
+        private async Task ProceedAsync(IWorkflowInstance workflowInstance, WorkflowExecutionPoint executionPoint, WorkflowStep nextStep)
         {
             //
             await _sender.SendExecuteNext(new WorkflowExecuteStep()
@@ -254,7 +269,7 @@ namespace WorkflowProcessor.Core
             });
         }
 
-        public async Task WorkflowInstanceFinishedAsync(IWorkflowInstance workflowInstance)
+        private async Task WorkflowInstanceFinishedAsync(IWorkflowInstance workflowInstance)
         {
             await _sender.SendFinish(new WorkflowInstanceFinishMessage()
             {
@@ -292,6 +307,10 @@ namespace WorkflowProcessor.Core
                             return "Connection conditions not met";
                         }
                     }
+                    else
+                    {
+                        return connection.Target;
+                    }
                 }
                 return $"Connection with name \"{executionResultWithValue.Value}\" not found";
             }
@@ -323,6 +342,11 @@ namespace WorkflowProcessor.Core
             var simpleConnections = outConnetctions.Where(x => !(x is IConditionalConnection)).Select(x => x.Target);
             result.AddRange(simpleConnections);
             return result;
+        }
+
+        public async Task<WorkflowExecutionResult> CompleteBookmark(WorkflowBookmark bookmark, ActivityExecutionResult executionResult)
+        {
+            return await ProcessExecutionResultAsync(bookmark.WorkflowExecutionPoint.WorkflowInstance, bookmark.WorkflowExecutionPoint, executionResult);
         }
     }
 }

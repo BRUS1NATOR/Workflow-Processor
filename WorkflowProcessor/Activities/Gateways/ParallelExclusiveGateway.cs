@@ -1,10 +1,12 @@
 ﻿using WorkflowProcessor.Core;
 using WorkflowProcessor.Core.ExecutionResults;
+using WorkflowProcessor.Core.Step;
 using WorkflowProcessor.Core.WorkflowElement;
 using WorkflowProcessor.Persistance.Context;
 
 namespace WorkflowProcessor.Activities.Gateways
 {
+    [ActivityType(BaseAcitivityType.ParallelGatewayStart)]
     public class ParallelExclusiveGateway<T> : WorkflowElement, IGateway
     {
         public Func<IWorkflowInstance, T>? _conditon { get; set; }
@@ -25,6 +27,7 @@ namespace WorkflowProcessor.Activities.Gateways
         }
     }
 
+    [ActivityType(BaseAcitivityType.ParallelGatewayStart)]
     public class ParallelExclusiveGateway<TContextData, T> : WorkflowElement<TContextData>, IGateway
         where TContextData : IContextData, new()
     {

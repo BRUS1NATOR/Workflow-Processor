@@ -17,10 +17,11 @@ namespace WorkflowProcessor.MasstransitWorkflow
         }
         public async Task Consume(ConsumeContext<WorkflowInstanceFinishMessage> context)
         {
+            var finishedWfInstanceId = context.Message.WorkflowInstanceId;
             var bookmark = await _workflowBookmarkService.GetBookMarkByWorkflowChild(context.Message.WorkflowInstanceId);
             if (bookmark is null)
             {
-                _logger.LogInformation($"No bookmark found for workflow with id {context.Message.WorkflowInstanceId}");
+                _logger.LogWarning($"No bookmark found for workflow with id {context.Message.WorkflowInstanceId}");
                 return;
             }
             await _workflowBookmarkService.BookmarkCompleteAsync(bookmark);

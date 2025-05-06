@@ -7,7 +7,7 @@ namespace WorkflowProcessor.API.Controllers
 {
     [ApiController]
     [Route("/api/[controller]/[action]")]
-    [Authorize]
+    //[Authorize]
     public class UserTaskController : ControllerBase
     {
         private readonly ILogger<BookmarkController> _logger;
@@ -24,7 +24,7 @@ namespace WorkflowProcessor.API.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "admin")]
+        //[Authorize(Roles = "admin")]
         public async Task<IActionResult> ReplaceExecutor([FromBody] ReplaceExecutor replaceExecutor)
         {
             var bookmark = _dbContext.WorkflowBookmarks

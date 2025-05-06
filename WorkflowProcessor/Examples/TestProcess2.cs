@@ -24,14 +24,17 @@ namespace WorkflowProcessor.Console.Examples
         public override Workflow Build()
         {
             //
-            var start = StepStart(); // You also can use Step<StartActivity>()
+            var start = Step<StartActivity>();
             //
-            var logValue = StepLog(activity => activity.Log(context => "Variable value: " + context.Data.Varialbe));
+            var logValue = Step<LogActivity<Data2>>(activity => activity.Log(context => "Значение: " + context.Data.Varialbe));
             //
-            var increaseValueByOne = StepCode(activity => activity.Code(context => { context.Data.Varialbe++; }));
-            var endCycle = StepLog(activity => activity.Log("Variable value >= 5"));
-            var ifStatement = StepIf(context => context.Data.Varialbe >= 5);
-            var endActivity = StepEnd();
+            var increaseValueByOne = Step<CodeActivity<Data2>>(activity => activity.Code(context => { context.Data.Varialbe++; }));
+            var endCycle = Step<LogActivity>(activity => activity.Log("Значение >= 5"));
+            var ifStatement = Step<If<Data2>>(activity =>
+            {
+                activity.SetCondition(context => context.Data.Varialbe >= 5);
+            });
+            var endActivity = Step<EndActivity>();
 
             Scheme.Connections = new List<Connection>()
                 {

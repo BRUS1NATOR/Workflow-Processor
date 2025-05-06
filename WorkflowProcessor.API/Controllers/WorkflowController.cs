@@ -60,7 +60,7 @@ namespace WorkflowProcessor.API.Controllers
             {
                 return Unauthorized();
             }
-            var result = await _workflowManager.StartAsync(workflow, userId);
+            var result = await _workflowManager.StartProcessAsync(workflow, userId);
             return Ok(result);
         }
     }

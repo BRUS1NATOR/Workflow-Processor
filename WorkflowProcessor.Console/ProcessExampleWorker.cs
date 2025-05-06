@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Hosting;
-using WorkflowProcessor.Console.Examples;
 using WorkflowProcessor.Core;
 using WorkflowProcessor.Services;
 
@@ -17,23 +16,32 @@ public class ProcessExampleWorker : BackgroundService
         _dbContext = dbContext;
         _bookmarkService = bookmarkService;
     }
+
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        //
-        //await _workflowManager.StartProcessAsync<TestProcess1>();
-        //await Task.Delay(2000);
-        await _workflowManager.StartProcessAsync<ParallelGatewayExample>();
-        await Task.Delay(2000);
-        //await _workflowManager.StartProcessAsync<TestProcess3>();
-        //await Task.Delay(2000);
-
-        while (!stoppingToken.IsCancellationRequested)
+        string? userInput = string.Empty;
+        Workflow? workflow = null;
+        while (string.IsNullOrEmpty(userInput) || workflow == null)
         {
-            await Task.Delay(10000);
-            //await _workflowManager.StartProcessAsync<TestProcess2>();
-            //var bookmark = _dbContext.WorkflowBookmarks.FirstOrDefault();
-            //await _bookmarkService.BookmarkCompleteAsync(bookmark);
-            //await Task.Delay(500000);
+            userInput = Console.ReadLine();
+            if (string.IsNullOrEmpty(userInput))
+            {
+                Console.WriteLine("Please enter valid workflow name");
+                continue;
+            }
+            workflow = _workflowStorage.GetWorkflow(userInput, null);
+            if (workflow is null)
+            {
+                Console.WriteLine($"Workflow with name {userInput} not found");
+                continue;
+            }
+            // Start process
+            await _workflowManager.StartProcessAsync(workflow);
+            // Infinite wait
+            while (!stoppingToken.IsCancellationRequested)
+            {
+                await Task.Delay(int.MaxValue);
+            }
         }
     }
 }

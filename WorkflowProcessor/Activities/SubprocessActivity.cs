@@ -1,11 +1,13 @@
 ﻿using WorkflowProcessor.Activities.Basic;
 using WorkflowProcessor.Core;
 using WorkflowProcessor.Core.ExecutionResults;
+using WorkflowProcessor.Core.Step;
 using WorkflowProcessor.Core.WorkflowElement;
 using WorkflowProcessor.Persistance.Context;
 
 namespace WorkflowProcessor.Activities
 {
+    [ActivityType(BaseAcitivityType.SubprocessActivity)]
     public class SubprocessActivity<TContextData, TProcess> : WorkflowElement<TContextData>, IBlockingActivity
         where TContextData : IContextData, new()
         where TProcess : WorkflowBuilder, new()
@@ -34,6 +36,7 @@ namespace WorkflowProcessor.Activities
         }
     }
 
+    [ActivityType(BaseAcitivityType.SubprocessActivity)]
     public class SubprocessActivity<TContextData, TProcess, TProcessContext> : SubprocessActivity<TContextData, TProcess>
         where TContextData : IContextData, new()
         where TProcess : WorkflowBuilder<TProcessContext>, new()
