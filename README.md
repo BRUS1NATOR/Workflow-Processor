@@ -5,6 +5,9 @@ Pros:
  * Steps (tasks) support DI in class constructor. (unlike ELSA)
  * Build connections with connectors (just like in ELSA, unlike WorkflowCore)
 
+## Deepwiki
+https://deepwiki.com/BRUS1NATOR/Workflow-Processor
+
 ## Example
 ![Visualization](images/workflow_example.drawio.png)
 ### Define context
