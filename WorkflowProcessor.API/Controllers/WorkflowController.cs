@@ -43,8 +43,8 @@ namespace WorkflowProcessor.API.Controllers
         }
 
         [HttpPost]
-        [Authorize]
-        public async Task<ActionResult<WorkflowInstance>> Start([FromBody] WorkflowInfo workflowInfo)
+        //[Authorize]
+        public async Task<ActionResult<WorkflowInstance>> Start([FromBody] WorkflowIdentifier workflowInfo)
         {
             var workflow = _workflowStorage.GetWorkflow(workflowInfo);
             if (workflow is null)
@@ -55,11 +55,12 @@ namespace WorkflowProcessor.API.Controllers
             {
                 return NotFound("Process is not allowed to be started from Web");
             }
-            var userId = _workflowUserService.GetUserId(HttpContext.User);
-            if (userId is null)
-            {
-                return Unauthorized();
-            }
+            var userId = 1;
+            //var userId = _workflowUserService.GetUserId(HttpContext.User);
+            //if (userId is null)
+            //{
+            //    return Unauthorized();
+            //}
             var result = await _workflowManager.StartProcessAsync(workflow, userId);
             return Ok(result);
         }

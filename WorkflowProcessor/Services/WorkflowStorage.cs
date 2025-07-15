@@ -25,7 +25,7 @@ namespace WorkflowProcessor.Services
         }
 
 
-        public Workflow? GetWorkflow(WorkflowInfo workflowInfo)
+        public Workflow? GetWorkflow(IWorkflowIdentifier workflowInfo)
         {
             return GetWorkflow(workflowInfo.Name, workflowInfo.Version);
         }

@@ -18,6 +18,7 @@ namespace WorkflowProcessor.Console.Examples
         {
             Name = "Example_Test_5";
             Version = 1;
+            IsAllowedToRunFromWeb = true;
         }
         public override Workflow Build()
         {
@@ -26,7 +27,7 @@ namespace WorkflowProcessor.Console.Examples
             {
                 x.Code(con =>
                 {
-                    con.WorkflowInstance.Name = "Привет мир!";
+                    con.WorkflowInstance.Name = "Parallel gateway example";
                 });
             });
             //
@@ -35,7 +36,7 @@ namespace WorkflowProcessor.Console.Examples
             //
             var parallelGatewayStart = StepParallelGateway(x => x.Data.Varialbe == 0);
             var parallelGatewayClose = StepParallelGatewayClose(parallelGatewayStart);
-
+            // Sleep activity (5 seconds)
             var sleepActivity = Step<SleepActivity<Data5>>(x => x.Sleep(5000));
             var endActivity = Step<EndActivity>();
 

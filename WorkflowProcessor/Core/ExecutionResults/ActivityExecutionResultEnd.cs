@@ -5,8 +5,8 @@ namespace WorkflowProcessor.Core.ExecutionResults
     public class ActivityExecutionResultEnd : IActivityExecutionResult
     {
         public long WorkflowInstanceId { get; set; }
-
-        public bool IsSuccess { get; set; } = true;
+        public ExecutionResultStatusCode StatusCode { get; } = ExecutionResultStatusCode.Finish;
+        public bool IsSuccess => StatusCode != ExecutionResultStatusCode.Error;
         public string Message { get; set; }
 
         public static ActivityExecutionResult Next(IWorkflowInstance workflowInstance)

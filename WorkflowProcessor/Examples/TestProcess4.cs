@@ -26,7 +26,7 @@ namespace WorkflowProcessor.Console.Examples
             {
                 x.Code(con =>
                 {
-                    con.WorkflowInstance.Name = "Привет мир!";
+                    con.WorkflowInstance.Name = "Subprocess example";
                 });
             });
             //

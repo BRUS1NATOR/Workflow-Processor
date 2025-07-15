@@ -19,6 +19,7 @@ namespace WorkflowProcessor.Console.Examples
         {
             Name = "Example_Test_2";
             Version = 1;
+            IsAllowedToRunFromWeb = true;
         }
 
         public override Workflow Build()
@@ -26,10 +27,10 @@ namespace WorkflowProcessor.Console.Examples
             //
             var start = Step<StartActivity>();
             //
-            var logValue = Step<LogActivity<Data2>>(activity => activity.Log(context => "Значение: " + context.Data.Varialbe));
+            var logValue = Step<LogActivity<Data2>>(activity => activity.Log(context => "Variable value: " + context.Data.Varialbe));
             //
             var increaseValueByOne = Step<CodeActivity<Data2>>(activity => activity.Code(context => { context.Data.Varialbe++; }));
-            var endCycle = Step<LogActivity>(activity => activity.Log("Значение >= 5"));
+            var endCycle = Step<LogActivity>(activity => activity.Log("Variable value >= 5"));
             var ifStatement = Step<If<Data2>>(activity =>
             {
                 activity.SetCondition(context => context.Data.Varialbe >= 5);

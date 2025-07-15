@@ -2,7 +2,7 @@
 {
     public interface IResult
     {
-        public ExecutionResultStatusCode StatusCode { get; set; }
+        public ExecutionResultStatusCode StatusCode { get; }
         public bool IsSuccess { get; }
         public string Message { get; set; }
     }

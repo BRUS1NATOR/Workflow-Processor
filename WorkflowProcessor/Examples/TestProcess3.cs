@@ -25,11 +25,11 @@ namespace WorkflowProcessor.Console.Examples
             //
             var start = StepStart();
             var logValue = Step<LogActivity<Data3>>(x => x.Log(context => context.Data.Varialbe));
-            var log1 = Step<LogActivity>(x => x.Log("Значение равно A"));
-            var log2 = Step<LogActivity>(x => x.Log("Значение равно B"));
-            var log3 = Step<LogActivity>(x => x.Log("Значение равно C"));
-            var log4 = Step<LogActivity>(x => x.Log("Значение начинается с буквы А"));
-            var log5 = Step<LogActivity>(x => x.Log("Значение любое"));
+            var log1 = Step<LogActivity>(x => x.Log("Variable value equals \"A\""));
+            var log2 = Step<LogActivity>(x => x.Log("Variable value equals \"B\""));
+            var log3 = Step<LogActivity>(x => x.Log("Variable value equals \"C\""));
+            var log4 = Step<LogActivity>(x => x.Log("Variable value starts with \"A\""));
+            var log5 = Step<LogActivity>(x => x.Log("Any variable value"));
             var stringGateway = Step<ExclusiveGateway<Data3, string>>(activity => activity.SetCondition(x => x.Data.Varialbe));
             var endLogActivity = StepEnd();
 

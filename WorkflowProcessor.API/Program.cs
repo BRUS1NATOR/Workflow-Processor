@@ -20,11 +20,7 @@ builder.Services.AddMassTransit(x =>
     x.AddWorkflowConsumers();
     x.UsingInMemory((context, cfg) =>
     {
-        //var connectionString = new Uri("RabbitMQ_URL");
-        //cfg.Host(connectionString);
-
         cfg.ConfigureEndpoints(context);
-
     });
 });
 builder.Services.AddTransient<IWorkflowUserService, WorkflowUserService>();
@@ -40,17 +36,17 @@ builder.Services.AddHttpClient();
 builder.Services.AddOptions();
 
 
-//string CORS_POLICY = "SPA";
-//string CORS_URL = "http://localhost:5173";
+string CORS_POLICY = "SPA";
+string CORS_URL = "http://localhost:5173";
 
-//builder.Services.AddCors(options =>
-//{
-//    options.AddPolicy(name: CORS_POLICY,
-//        policy =>
-//        {
-//            policy.WithOrigins(CORS_URL).AllowAnyHeader().AllowAnyMethod().AllowCredentials();
-//        });
-//});
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: CORS_POLICY,
+        policy =>
+        {
+            policy.WithOrigins(CORS_URL).AllowAnyHeader().AllowAnyMethod().AllowCredentials();
+        });
+});
 
 var app = builder.Build();
 
@@ -74,7 +70,7 @@ if (app.Environment.IsDevelopment())
 }
 //app.UseHttpsRedirection();
 
-//app.UseCors(CORS_POLICY);
+app.UseCors(CORS_POLICY);
 app.AddExampleWorkflows();
 app.UseAuthorization();
 
