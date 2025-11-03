@@ -14,9 +14,6 @@ var app = Host.CreateDefaultBuilder(args)
             x.AddWorkflowConsumers();
             x.UsingInMemory((context, cfg) =>
             {
-                //var connectionString = new Uri("RabbitMQ_URL");
-                //cfg.Host(connectionString);
-
                 cfg.ConfigureEndpoints(context);
 
             });

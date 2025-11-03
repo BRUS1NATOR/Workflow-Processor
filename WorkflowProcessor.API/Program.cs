@@ -58,7 +58,7 @@ using (var scope = app.Services.CreateScope())
         await db.Database.MigrateAsync();
     }
 }
-//app.AddExampleWorkflows();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

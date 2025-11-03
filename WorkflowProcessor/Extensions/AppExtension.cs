@@ -10,13 +10,12 @@ namespace WorkflowProcessor.Extensions
     {
         public static void AddWorkflow<T>(this IHost host) where T : WorkflowBuilder, new()
         {
-            // Запустить процесс
             var _workflowStorage = host.Services.GetRequiredService<WorkflowStorage>();
             _workflowStorage.AddWorkflow<T>();
         }
+
         public static void AddExampleWorkflows(this IHost host)
         {
-            // Запустить процесс
             var _workflowStorage = host.Services.GetRequiredService<WorkflowStorage>();
             _workflowStorage.AddWorkflow<TestProcess1>();
             _workflowStorage.AddWorkflow<TestProcess2>();

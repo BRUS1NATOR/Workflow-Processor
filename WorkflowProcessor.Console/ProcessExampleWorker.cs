@@ -21,6 +21,7 @@ public class ProcessExampleWorker : BackgroundService
     {
         string? userInput = string.Empty;
         Workflow? workflow = null;
+        Console.WriteLine("Please enter workflow name");
         while (string.IsNullOrEmpty(userInput) || workflow == null)
         {
             userInput = Console.ReadLine();

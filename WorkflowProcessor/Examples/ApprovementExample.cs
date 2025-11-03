@@ -8,7 +8,6 @@ using WorkflowProcessor.Persistance.Context.Json;
 
 namespace WorkflowProcessor.Console.Examples
 {
-    //[JsonDerivedType(typeof(ApprovementData), "ApprovementData")]
     [PolymorphicContext(typeof(ApprovementData), "ApprovementData")]
     public class ApprovementData : IContextData
     {

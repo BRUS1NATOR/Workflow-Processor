@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using Microsoft.Extensions.Logging;
+using System.Reflection;
 using WorkflowProcessor.Core;
 using WorkflowProcessor.Persistance.Context.Json;
 
@@ -7,9 +8,16 @@ namespace WorkflowProcessor.Services
     public class WorkflowStorage
     {
         public List<Workflow> Workflows = new();
+        private ILogger<WorkflowStorage> _logger { get; set; }
+
+        public WorkflowStorage(ILogger<WorkflowStorage> logger)
+        {
+            _logger = logger;
+        }
 
         public void AddWorkflow<T>() where T : WorkflowBuilder, new()
         {
+            _logger.LogInformation($"Add workflow: {typeof(T)}");
             if (typeof(T).BaseType.IsGenericType)
             {
                 foreach (var generic in typeof(T).BaseType.GetGenericArguments())
