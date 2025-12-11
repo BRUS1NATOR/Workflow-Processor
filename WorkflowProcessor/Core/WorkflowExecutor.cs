@@ -21,15 +21,15 @@ namespace WorkflowProcessor.Core
         private readonly IServiceProvider _serviceProvider;
         private readonly WorkflowContext _dbContext;
         private readonly WorkflowStorage _workflowStorage;
-        private readonly WorkflowSender _sender;
+        private readonly IWorkflowMessageProducer _messageProducer;
 
-        public WorkflowExecutor(ILogger<WorkflowExecutor> logger, IServiceProvider serviceProvider, WorkflowContext dbContext, WorkflowStorage workflowStorage, WorkflowSender sender)
+        public WorkflowExecutor(ILogger<WorkflowExecutor> logger, IServiceProvider serviceProvider, WorkflowContext dbContext, WorkflowStorage workflowStorage, IWorkflowMessageProducer sender)
         {
             _logger = logger;
             _serviceProvider = serviceProvider;
             _dbContext = dbContext;
             _workflowStorage = workflowStorage;
-            _sender = sender;
+            _messageProducer = sender;
         }
 
         /// <summary>
@@ -261,7 +261,7 @@ namespace WorkflowProcessor.Core
         private async Task ProceedAsync(IWorkflowInstance workflowInstance, WorkflowExecutionPoint executionPoint, WorkflowStep nextStep)
         {
             //
-            await _sender.SendExecuteNext(new WorkflowExecuteStep()
+            await _messageProducer.SendExecuteNext(new WorkflowExecuteStep()
             {
                 StepId = nextStep.StepId,
                 PreviousExecutionPointId = executionPoint.Id,
@@ -271,7 +271,7 @@ namespace WorkflowProcessor.Core
 
         private async Task WorkflowInstanceFinishedAsync(IWorkflowInstance workflowInstance)
         {
-            await _sender.SendFinish(new WorkflowInstanceFinishMessage()
+            await _messageProducer.SendFinish(new WorkflowInstanceFinishMessage()
             {
                 WorkflowInstanceId = workflowInstance.Id
             });

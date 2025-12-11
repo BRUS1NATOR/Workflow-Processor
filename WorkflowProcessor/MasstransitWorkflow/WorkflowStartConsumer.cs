@@ -1,16 +1,15 @@
-﻿using MassTransit;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using WorkflowProcessor.Core;
 using WorkflowProcessor.MasstransitWorkflow.Models;
 using WorkflowProcessor.Services;
 
 namespace WorkflowProcessor.MasstransitWorkflow
 {
-    public class WorkflowStartConsumer : IConsumer<WorkflowStartMessage>
+    public class WorkflowStartConsumer : IWorkflowStartConsumer
     {
-        private WorkflowExecutor _workflowManager;
-        private WorkflowStorage _workflowStorage;
-        private ILogger<WorkflowStartConsumer> _logger;
+        protected WorkflowExecutor _workflowManager;
+        protected WorkflowStorage _workflowStorage;
+        protected ILogger<WorkflowStartConsumer> _logger;
 
         public WorkflowStartConsumer(ILogger<WorkflowStartConsumer> logger, WorkflowExecutor workflowManager, WorkflowStorage workflowStorage)
         {
@@ -18,12 +17,12 @@ namespace WorkflowProcessor.MasstransitWorkflow
             _workflowManager = workflowManager;
             _workflowStorage = workflowStorage;
         }
-        public async Task Consume(ConsumeContext<WorkflowStartMessage> context)
+        public async Task ConsumeAsync(WorkflowStartMessage message)
         {
-            var workflow = _workflowStorage.GetWorkflow(context.Message.WorkflowName, context.Message.Version);
+            var workflow = _workflowStorage.GetWorkflow(message.WorkflowName, message.Version);
             if (workflow is null)
             {
-                _logger.LogWarning($"WorkflowIsntance with name: {context.Message.WorkflowName} and version: {context.Message.Version} not found");
+                _logger.LogWarning($"WorkflowIsntance with name: {message.WorkflowName} and version: {message.Version} not found");
                 return;
             }
             await _workflowManager.StartProcessAsync(workflow);

@@ -1,8 +1,8 @@
-using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 using WorkflowProcessor.Extensions;
 using WorkflowProcessor.Services;
+using WorkflowProcessor.MassTransit.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,14 +15,9 @@ builder.Services.AddLogging(config =>
 // Add services to the container.
 
 builder.Services.AddDbContext<WorkflowContext>(x => x.UseNpgsql(@"Server=127.0.0.1;Port=5432;Database=myworkflow;User Id=postgres;Password=root;"));
-builder.Services.AddMassTransit(x =>
-{
-    x.AddWorkflowConsumers();
-    x.UsingInMemory((context, cfg) =>
-    {
-        cfg.ConfigureEndpoints(context);
-    });
-});
+//
+builder.Services.AddInMemoryMassTransit();
+//
 builder.Services.AddTransient<IWorkflowUserService, WorkflowUserService>();
 builder.Services.AddWorkflowServices();
 

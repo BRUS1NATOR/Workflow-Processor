@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\WorkflowProcessor.Masstransit\WorkflowProcessor.MassTransit.csproj" />
     <ProjectReference Include="..\WorkflowProcessor\WorkflowProcessor.csproj" />
   </ItemGroup>
 

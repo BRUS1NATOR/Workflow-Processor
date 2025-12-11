@@ -1,27 +1,27 @@
-﻿using MassTransit;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using WorkflowProcessor.MasstransitWorkflow.Models;
 using WorkflowProcessor.Services;
 
 namespace WorkflowProcessor.MasstransitWorkflow
 {
-    public class WorkflowFinishConsumer : IConsumer<WorkflowInstanceFinishMessage>
+    public class WorkflowFinishConsumer : IWorkflowFinishConsumer
     {
-        private ILogger<WorkflowFinishConsumer> _logger;
-        private WorkflowBookmarkService _workflowBookmarkService;
+        protected ILogger<WorkflowFinishConsumer> _logger;
+        protected WorkflowBookmarkService _workflowBookmarkService;
 
         public WorkflowFinishConsumer(ILogger<WorkflowFinishConsumer> logger, WorkflowBookmarkService workflowBookmarkService)
         {
             _logger = logger;
             _workflowBookmarkService = workflowBookmarkService;
         }
-        public async Task Consume(ConsumeContext<WorkflowInstanceFinishMessage> context)
+
+        public async Task ConsumeAsync(WorkflowInstanceFinishMessage message)
         {
-            var finishedWfInstanceId = context.Message.WorkflowInstanceId;
-            var bookmark = await _workflowBookmarkService.GetBookMarkByWorkflowChild(context.Message.WorkflowInstanceId);
+            var finishedWfInstanceId = message.WorkflowInstanceId;
+            var bookmark = await _workflowBookmarkService.GetBookMarkByWorkflowChild(message.WorkflowInstanceId);
             if (bookmark is null)
             {
-                _logger.LogWarning($"No bookmark found for workflow with id {context.Message.WorkflowInstanceId}");
+                _logger.LogWarning($"No bookmark found for workflow with id {message.WorkflowInstanceId}");
                 return;
             }
             await _workflowBookmarkService.BookmarkCompleteAsync(bookmark);

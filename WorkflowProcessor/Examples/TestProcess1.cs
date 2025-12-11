@@ -1,5 +1,4 @@
-﻿using System.Text.Json.Serialization;
-using WorkflowProcessor.Activities;
+﻿using WorkflowProcessor.Activities;
 using WorkflowProcessor.Activities.Basic;
 using WorkflowProcessor.Activities.Gateways;
 using WorkflowProcessor.Core;
@@ -26,7 +25,7 @@ namespace WorkflowProcessor.Console.Examples
         public override Workflow Build()
         {
             //
-            var start = Step<StartActivity>(x => { System.Console.WriteLine("START"); });
+            var start = Step<StartActivity>(x => { System.Console.WriteLine("PROCESS START"); });
             var helloWorld = Step<LogActivity>(activity => activity.Log("Hello world!"));
 
             var setVariableValue = Step<CodeActivity<Data1>>((activity) =>
@@ -46,7 +45,7 @@ namespace WorkflowProcessor.Console.Examples
             {
                 activity.Code(x => { System.Console.WriteLine(x.Data.NameVariable); });
             });
-            var endActivity = Step<EndActivity>(x => { System.Console.WriteLine("END"); });
+            var endActivity = Step<EndActivity>(x => { System.Console.WriteLine("PROCESS END"); });
 
             Scheme.Connections = new () {
                     new Connection(start, helloWorld),

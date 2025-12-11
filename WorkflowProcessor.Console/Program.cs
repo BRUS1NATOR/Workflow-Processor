@@ -1,24 +1,17 @@
 ﻿// See https://aka.ms/new-console-template for more information
-using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WorkflowProcessor.Extensions;
+using WorkflowProcessor.MassTransit.Extensions;
 
 var app = Host.CreateDefaultBuilder(args)
     .ConfigureServices((hostContext, services) =>
     {
         services.AddDbContext<WorkflowContext>(x => x.UseNpgsql(@"Server=127.0.0.1;Port=5432;Database=myworkflow;User Id=postgres;Password=root;"));
-        services.AddMassTransit(x =>
-        {
-            x.AddWorkflowConsumers();
-            x.UsingInMemory((context, cfg) =>
-            {
-                cfg.ConfigureEndpoints(context);
+        //services.AddInMemoryMassTransit();
 
-            });
-        });
-
+        services.AddWorkflowInMemoryConsumers();
         services.AddWorkflowServices();
         services.AddHostedService<ProcessExampleWorker>();
     })

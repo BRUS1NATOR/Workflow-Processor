@@ -1,30 +1,30 @@
-﻿using MassTransit;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using WorkflowProcessor.Core;
 using WorkflowProcessor.MasstransitWorkflow.Models;
 
 namespace WorkflowProcessor.MasstransitWorkflow
 {
-    public class WorkflowExecuteStepConsumer : IConsumer<WorkflowExecuteStep>
+    public class WorkflowExecuteStepConsumer : IWorkflowExecuteStepConsumer
     {
-        private WorkflowContext _dbContext;
-        private WorkflowExecutor _workflowManager;
+        protected WorkflowContext _dbContext;
+        protected WorkflowExecutor _workflowManager;
 
         public WorkflowExecuteStepConsumer(WorkflowContext dbContext, WorkflowExecutor workflowManager)
         {
             _dbContext = dbContext;
             _workflowManager = workflowManager;
         }
-        public async Task Consume(ConsumeContext<WorkflowExecuteStep> context)
+
+        public async Task ConsumeAsync(WorkflowExecuteStep executeStep)
         {
             var workflowInstance = await _dbContext.WorkflowInstances
                 .Include(x => x.Context)
-                .FirstOrDefaultAsync(x => x.Id == context.Message.WorkflowInstanceId);
-            if (workflowInstance == null)
+                .FirstOrDefaultAsync(x => x.Id == executeStep.WorkflowInstanceId);
+            if (workflowInstance is null)
             {
-                throw new Exception($"WorkflowInstance with id {context.Message.WorkflowInstanceId} not found");
+                throw new Exception($"WorkflowInstance with id {executeStep.WorkflowInstanceId} not found");
             }
-            await _workflowManager.ExecuteAsync(workflowInstance, context.Message);
+            await _workflowManager.ExecuteAsync(workflowInstance, executeStep);
         }
     }
 }

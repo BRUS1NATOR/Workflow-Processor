@@ -3,15 +3,15 @@ using WorkflowProcessor.MasstransitWorkflow.Models;
 
 namespace WorkflowProcessor.MasstransitWorkflow
 {
-    public class WorkflowSender
+    public class WorkflowMessageMassTransitProducer : IWorkflowMessageProducer
     {
-        ISendEndpointProvider _sendEndpointProvider { get; set; }
-        IBus _bus { get; set; }
-        public WorkflowSender(ISendEndpointProvider sendEndpointProvider, IBus bus)
+        protected IBus _bus;
+
+        public WorkflowMessageMassTransitProducer(IBus bus)
         {
-            _sendEndpointProvider = sendEndpointProvider;
             _bus = bus;
         }
+
         public async Task SendStart(WorkflowStartMessage message)
         {
             await _bus.Publish(message);
