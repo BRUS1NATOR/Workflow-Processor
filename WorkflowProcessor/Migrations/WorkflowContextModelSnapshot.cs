@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace WorkflowProcessor.Migrations
 {
-    [DbContext(typeof(WorkflowContext))]
+    [DbContext(typeof(WorkflowDbContext))]
     partial class WorkflowContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

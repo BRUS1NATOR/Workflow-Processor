@@ -4,6 +4,7 @@ using WorkflowProcessor.Core;
 using WorkflowProcessor.Core.Connections;
 using WorkflowProcessor.Persistance.Context;
 using WorkflowProcessor.Persistance.Context.Json;
+using WorkflowProcessor.Tests.Examples;
 
 namespace WorkflowProcessor.Console.Examples
 {
@@ -17,7 +18,7 @@ namespace WorkflowProcessor.Console.Examples
     {
         public TestProcess3()
         {
-            Name = "Example_Test_3";
+            Name = TestConsts.PROCESS_1;
             Version = 1;
         }
         public override Workflow Build()

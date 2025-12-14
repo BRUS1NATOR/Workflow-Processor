@@ -1,18 +1,17 @@
 ﻿using MassTransit;
 using WorkflowProcessor.Core;
-using WorkflowProcessor.MasstransitWorkflow.Models;
+using WorkflowProcessor.Bus.Models;
+using Microsoft.Extensions.Logging;
 
-namespace WorkflowProcessor.MasstransitWorkflow
+namespace WorkflowProcessor.Bus
 {
-    public class WorkflowExecuteStepConsumerMassTransit : WorkflowExecuteStepConsumer, IConsumer<WorkflowExecuteStep>, IWorkflowExecuteStepConsumer
+    public class WorkflowExecuteStepConsumerMassTransit : WorkflowExecuteStepConsumer, IConsumer<WorkflowExecuteStepMessage>
     {
-        public WorkflowExecuteStepConsumerMassTransit(WorkflowContext dbContext, WorkflowExecutor workflowManager) : base(dbContext, workflowManager)
+        public WorkflowExecuteStepConsumerMassTransit(ILogger<WorkflowExecuteStepConsumer> logger, WorkflowExecutor workflowExecutor, WorkflowDbContext dbContext) : base(logger, workflowExecutor, dbContext)
         {
-            _dbContext = dbContext;
-            _workflowManager = workflowManager;
         }
 
-        public async Task Consume(ConsumeContext<WorkflowExecuteStep> context)
+        public async Task Consume(ConsumeContext<WorkflowExecuteStepMessage> context)
         {
             await ConsumeAsync(context.Message);
         }

@@ -1,11 +1,11 @@
 ﻿using MassTransit;
 using Microsoft.Extensions.Logging;
-using WorkflowProcessor.MasstransitWorkflow.Models;
+using WorkflowProcessor.Bus.Models;
 using WorkflowProcessor.Services;
 
-namespace WorkflowProcessor.MasstransitWorkflow
+namespace WorkflowProcessor.Bus
 {
-    public class WorkflowFinishConsumerMassTransit : WorkflowFinishConsumer, IWorkflowFinishConsumer, IConsumer<WorkflowInstanceFinishMessage>
+    public class WorkflowFinishConsumerMassTransit : WorkflowFinishConsumer, IConsumer<WorkflowInstanceFinishMessage>
     {
         public WorkflowFinishConsumerMassTransit(ILogger<WorkflowFinishConsumer> logger, WorkflowBookmarkService workflowBookmarkService) 
             : base(logger, workflowBookmarkService)

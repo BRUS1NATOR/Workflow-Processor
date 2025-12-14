@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkflowProcessor.Console",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkflowProcessor.MassTransit", "WorkflowProcessor.MassTransit\WorkflowProcessor.MassTransit.csproj", "{C317709A-6390-4F2A-9A45-CC7B574D10C7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkflowProcessor.Tests", "WorkflowProcessor.Tests\WorkflowProcessor.Tests.csproj", "{F9414E12-D724-4A50-A505-C5C1C5CD62B2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{C317709A-6390-4F2A-9A45-CC7B574D10C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C317709A-6390-4F2A-9A45-CC7B574D10C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C317709A-6390-4F2A-9A45-CC7B574D10C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9414E12-D724-4A50-A505-C5C1C5CD62B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9414E12-D724-4A50-A505-C5C1C5CD62B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9414E12-D724-4A50-A505-C5C1C5CD62B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9414E12-D724-4A50-A505-C5C1C5CD62B2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

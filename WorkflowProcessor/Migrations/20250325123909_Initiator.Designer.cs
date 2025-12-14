@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace WorkflowProcessor.Migrations
 {
-    [DbContext(typeof(WorkflowContext))]
+    [DbContext(typeof(WorkflowDbContext))]
     [Migration("20250325123909_Initiator")]
     partial class Initiator
     {

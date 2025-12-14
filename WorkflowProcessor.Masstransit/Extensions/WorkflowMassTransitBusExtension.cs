@@ -1,5 +1,5 @@
 ﻿using MassTransit;
-using WorkflowProcessor.MasstransitWorkflow;
+using WorkflowProcessor.Bus;
 
 namespace WorkflowProcessor.MassTransit.Extensions
 {

@@ -5,11 +5,11 @@ using WorkflowProcessor.Services;
 public class ProcessExampleWorker : BackgroundService
 {
     readonly WorkflowExecutor _workflowManager;
-    private readonly WorkflowStorage _workflowStorage;
-    private readonly WorkflowContext _dbContext;
+    private readonly IWorkflowStorage _workflowStorage;
+    private readonly WorkflowDbContext _dbContext;
     private readonly WorkflowBookmarkService _bookmarkService;
 
-    public ProcessExampleWorker(WorkflowExecutor workflowManager, WorkflowStorage workflowStorage, WorkflowContext dbContext, WorkflowBookmarkService bookmarkService)
+    public ProcessExampleWorker(WorkflowExecutor workflowManager, IWorkflowStorage workflowStorage, WorkflowDbContext dbContext, WorkflowBookmarkService bookmarkService)
     {
         _workflowManager = workflowManager;
         _workflowStorage = workflowStorage;

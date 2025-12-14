@@ -3,14 +3,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using WorkflowProcessor.Core;
 
-public class WorkflowContext : DbContext
+public class WorkflowDbContext : DbContext, IWorkflowDbContext
 {
     public DbSet<WorkflowExecutionPoint> WorkflowExecutionPoints { get; set; }
     public DbSet<WorkflowBookmark> WorkflowBookmarks { get; set; }
     public DbSet<UserTask> UserTasks { get; set; }
     public DbSet<WorkflowInstance> WorkflowInstances { get; set; }
 
-    public WorkflowContext(DbContextOptions<WorkflowContext> options) : base(options)
+    public WorkflowDbContext(DbContextOptions<WorkflowDbContext> options) : base(options)
     {
 
     }
@@ -47,7 +47,7 @@ public class WorkflowContext : DbContext
             e.Property(x => x.JsonData).HasColumnName("data").HasColumnType("jsonb");
             e.Ignore(x => x.DataObject);
         });
-        
+
         workflowInstance.OwnsOne(w => w.WorkflowInfo,
             o =>
             {
@@ -77,7 +77,7 @@ public class WorkflowContext : DbContext
             .WithOne(x => x.WorkflowExecutionPoint)
             .HasForeignKey<WorkflowBookmark>(e => e.WorkflowExecutionPointId)
         .IsRequired();
-    
+
         // Bookmark
         var workflowBookmark = modelBuilder.Entity<WorkflowBookmark>();
         workflowBookmark.HasKey(x => x.Id);

@@ -5,7 +5,7 @@ using WorkflowProcessor.Persistance.Context.Json;
 
 namespace WorkflowProcessor.Services
 {
-    public class WorkflowStorage
+    public class WorkflowStorage : IWorkflowStorage
     {
         public List<Workflow> Workflows = new();
         private ILogger<WorkflowStorage> _logger { get; set; }

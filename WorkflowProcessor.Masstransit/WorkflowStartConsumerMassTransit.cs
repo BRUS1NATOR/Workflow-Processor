@@ -1,10 +1,10 @@
 ﻿using MassTransit;
 using Microsoft.Extensions.Logging;
+using WorkflowProcessor.Bus.Models;
 using WorkflowProcessor.Core;
-using WorkflowProcessor.MasstransitWorkflow.Models;
 using WorkflowProcessor.Services;
 
-namespace WorkflowProcessor.MasstransitWorkflow
+namespace WorkflowProcessor.Bus
 {
     public class WorkflowStartConsumerMassTransit : WorkflowStartConsumer, IConsumer<WorkflowStartMessage>
     {

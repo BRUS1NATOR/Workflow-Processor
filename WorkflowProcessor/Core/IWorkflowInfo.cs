@@ -12,6 +12,17 @@ namespace WorkflowProcessor.Core
 
         [JsonPropertyName("isAllowedToRunFromWeb")]
         public bool IsAllowedToRunFromWeb { get; set; }
+
+        public WorkflowInfo()
+        {
+            
+        }
+
+        public WorkflowInfo(string name, int version)
+        {
+            this.Name = name;
+            this.Version = version;
+        }
     }
 
     public interface IWorkflowIdentifier
@@ -30,6 +41,17 @@ namespace WorkflowProcessor.Core
 
         [JsonPropertyName("version")]
         public int Version { get; set; }
+
+        public WorkflowIdentifier()
+        {
+
+        }
+
+        public WorkflowIdentifier(string name, int version)
+        {
+            this.Name = name;
+            this.Version = version;
+        }
 
     }
 }

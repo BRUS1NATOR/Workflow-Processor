@@ -8,10 +8,10 @@ using WorkflowProcessor.Core.ExecutionResults;
 using WorkflowProcessor.Core.ExecutionResults.Interfaces;
 using WorkflowProcessor.Core.Step;
 using WorkflowProcessor.Core.WorkflowElement;
-using WorkflowProcessor.MasstransitWorkflow;
-using WorkflowProcessor.MasstransitWorkflow.Models;
+using WorkflowProcessor.Bus.Models;
 using WorkflowProcessor.Persistance.Context;
 using WorkflowProcessor.Services;
+using WorkflowProcessor.Bus;
 
 namespace WorkflowProcessor.Core
 {
@@ -19,11 +19,15 @@ namespace WorkflowProcessor.Core
     {
         private readonly ILogger<WorkflowExecutor> _logger;
         private readonly IServiceProvider _serviceProvider;
-        private readonly WorkflowContext _dbContext;
-        private readonly WorkflowStorage _workflowStorage;
+        private readonly IWorkflowDbContext _dbContext;
+        private readonly IWorkflowStorage _workflowStorage;
         private readonly IWorkflowMessageProducer _messageProducer;
 
-        public WorkflowExecutor(ILogger<WorkflowExecutor> logger, IServiceProvider serviceProvider, WorkflowContext dbContext, WorkflowStorage workflowStorage, IWorkflowMessageProducer sender)
+        public WorkflowExecutor(ILogger<WorkflowExecutor> logger, 
+            IServiceProvider serviceProvider, 
+            IWorkflowDbContext dbContext,
+            IWorkflowStorage workflowStorage, 
+            IWorkflowMessageProducer sender)
         {
             _logger = logger;
             _serviceProvider = serviceProvider;
@@ -74,6 +78,7 @@ namespace WorkflowProcessor.Core
         /// <returns></returns>
         public async Task<WorkflowInstance> StartProcessAsync(Workflow workflow, long? initiator = null, IWorkflowInstance? parent = null)
         {
+            _logger.LogInformation($"Starting process {workflow.Name} v.{workflow.Version}...");
             // Создаем Instance
             var workflowInstance = new WorkflowInstance();
             workflowInstance.ParentId = parent?.Id;
@@ -98,14 +103,14 @@ namespace WorkflowProcessor.Core
             _dbContext.WorkflowInstances.Add(workflowInstance);
             await _dbContext.SaveChangesAsync();
             //
-            await ExecuteActivityAsync(workflow, workflowInstance, new WorkflowExecuteStep() { StepId = startStep.StepId, WorkflowInstanceId = workflowInstance.Id }, executionPoint);
+            await ExecuteStepAsync(workflow, workflowInstance, new WorkflowExecuteStepMessage() { StepId = startStep.StepId, WorkflowInstanceId = workflowInstance.Id }, executionPoint);
 
             return workflowInstance;
         }
 
-        public async Task<WorkflowExecutionResult> ExecuteAsync(IWorkflowInstance workflowInstance, WorkflowExecuteStep executeNext)
+        public async Task<WorkflowExecutionResult> ExecuteStepAsync(IWorkflowInstance workflowInstance, WorkflowExecuteStepMessage executeNext)
         {
-            var workflow = _workflowStorage.GetWorkflow(workflowInstance.WorkflowInfo);
+            var workflow = _workflowStorage.GetWorkflow(workflowInstance.WorkflowInfo)!;
 
             var previousExecutionPoint = _dbContext.WorkflowExecutionPoints.First(x => x.Id == executeNext.PreviousExecutionPointId);
             previousExecutionPoint.Status = WorkflowExecutionStepStatus.Finished;
@@ -149,10 +154,10 @@ namespace WorkflowProcessor.Core
             workflowInstance.WorkflowExecutionPoints.Add(executionPoint);
             await _dbContext.SaveChangesAsync();
 
-            return await ExecuteActivityAsync(workflow, workflowInstance, executeNext, executionPoint);
+            return await ExecuteStepAsync(workflow, workflowInstance, executeNext, executionPoint);
         }
 
-        private async Task<WorkflowExecutionResult> ExecuteActivityAsync(Workflow workflow, IWorkflowInstance workflowInstance, WorkflowExecuteStep step, WorkflowExecutionPoint executionPoint)
+        private async Task<WorkflowExecutionResult> ExecuteStepAsync(Workflow workflow, IWorkflowInstance workflowInstance, WorkflowExecuteStepMessage step, WorkflowExecutionPoint executionPoint)
         {
             var currentStep = workflow.Scheme.Elements.First(x => x.StepId == step.StepId);
 
@@ -261,7 +266,7 @@ namespace WorkflowProcessor.Core
         private async Task ProceedAsync(IWorkflowInstance workflowInstance, WorkflowExecutionPoint executionPoint, WorkflowStep nextStep)
         {
             //
-            await _messageProducer.SendExecuteNext(new WorkflowExecuteStep()
+            await _messageProducer.SendExecuteNextAsync(new WorkflowExecuteStepMessage()
             {
                 StepId = nextStep.StepId,
                 PreviousExecutionPointId = executionPoint.Id,
@@ -271,7 +276,7 @@ namespace WorkflowProcessor.Core
 
         private async Task WorkflowInstanceFinishedAsync(IWorkflowInstance workflowInstance)
         {
-            await _messageProducer.SendFinish(new WorkflowInstanceFinishMessage()
+            await _messageProducer.SendFinishAsync(new WorkflowInstanceFinishMessage()
             {
                 WorkflowInstanceId = workflowInstance.Id
             });

@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace WorkflowProcessor.Migrations
 {
-    [DbContext(typeof(WorkflowContext))]
+    [DbContext(typeof(WorkflowDbContext))]
     [Migration("20250322124006_LongId")]
     partial class LongId
     {

@@ -1,10 +1,10 @@
 ﻿using Microsoft.Extensions.Logging;
-using WorkflowProcessor.MasstransitWorkflow.Models;
+using WorkflowProcessor.Bus.Models;
 using WorkflowProcessor.Services;
 
-namespace WorkflowProcessor.MasstransitWorkflow
+namespace WorkflowProcessor.Bus
 {
-    public class WorkflowFinishConsumer : IWorkflowFinishConsumer
+    public class WorkflowFinishConsumer : IWorkflowMessageConsumer<WorkflowInstanceFinishMessage>
     {
         protected ILogger<WorkflowFinishConsumer> _logger;
         protected WorkflowBookmarkService _workflowBookmarkService;

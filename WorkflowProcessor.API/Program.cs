@@ -14,7 +14,7 @@ builder.Services.AddLogging(config =>
 
 // Add services to the container.
 
-builder.Services.AddDbContext<WorkflowContext>(x => x.UseNpgsql(@"Server=127.0.0.1;Port=5432;Database=myworkflow;User Id=postgres;Password=root;"));
+builder.Services.AddDbContext<WorkflowDbContext>(x => x.UseNpgsql(@"Server=127.0.0.1;Port=5432;Database=myworkflow;User Id=postgres;Password=root;"));
 //
 builder.Services.AddInMemoryMassTransit();
 //
@@ -47,7 +47,7 @@ var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
 {
-    var db = scope.ServiceProvider.GetRequiredService<WorkflowContext>();
+    var db = scope.ServiceProvider.GetRequiredService<WorkflowDbContext>();
     if (db.Database.GetPendingMigrations().Any())
     {
         await db.Database.MigrateAsync();

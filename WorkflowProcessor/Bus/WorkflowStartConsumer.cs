@@ -1,20 +1,20 @@
 ﻿using Microsoft.Extensions.Logging;
+using WorkflowProcessor.Bus.Models;
 using WorkflowProcessor.Core;
-using WorkflowProcessor.MasstransitWorkflow.Models;
 using WorkflowProcessor.Services;
 
-namespace WorkflowProcessor.MasstransitWorkflow
+namespace WorkflowProcessor.Bus
 {
-    public class WorkflowStartConsumer : IWorkflowStartConsumer
+    public class WorkflowStartConsumer : IWorkflowMessageConsumer<WorkflowStartMessage>
     {
-        protected WorkflowExecutor _workflowManager;
-        protected WorkflowStorage _workflowStorage;
         protected ILogger<WorkflowStartConsumer> _logger;
+        protected WorkflowExecutor _workflowExecutor;
+        protected IWorkflowStorage _workflowStorage;
 
-        public WorkflowStartConsumer(ILogger<WorkflowStartConsumer> logger, WorkflowExecutor workflowManager, WorkflowStorage workflowStorage)
+        public WorkflowStartConsumer(ILogger<WorkflowStartConsumer> logger, WorkflowExecutor workflowExecutor, IWorkflowStorage workflowStorage)
         {
             _logger = logger;
-            _workflowManager = workflowManager;
+            _workflowExecutor = workflowExecutor;
             _workflowStorage = workflowStorage;
         }
         public async Task ConsumeAsync(WorkflowStartMessage message)
@@ -25,7 +25,7 @@ namespace WorkflowProcessor.MasstransitWorkflow
                 _logger.LogWarning($"WorkflowIsntance with name: {message.WorkflowName} and version: {message.Version} not found");
                 return;
             }
-            await _workflowManager.StartProcessAsync(workflow);
+            await _workflowExecutor.StartProcessAsync(workflow);
         }
     }
 }

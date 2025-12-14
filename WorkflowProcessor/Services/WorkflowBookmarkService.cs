@@ -9,9 +9,9 @@ namespace WorkflowProcessor.Services
     {
         private ILogger<WorkflowBookmarkService> _logger;
         private WorkflowExecutor _workflowExecutor;
-        private WorkflowContext _dbContext;
+        private WorkflowDbContext _dbContext;
 
-        public WorkflowBookmarkService(ILogger<WorkflowBookmarkService> logger, WorkflowExecutor workflowExecutor, WorkflowContext dbContext)
+        public WorkflowBookmarkService(ILogger<WorkflowBookmarkService> logger, WorkflowExecutor workflowExecutor, WorkflowDbContext dbContext)
         {
             _logger = logger;
             _workflowExecutor = workflowExecutor;

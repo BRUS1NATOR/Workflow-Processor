@@ -1,7 +1,7 @@
 ﻿using MassTransit;
-using WorkflowProcessor.MasstransitWorkflow.Models;
+using WorkflowProcessor.Bus.Models;
 
-namespace WorkflowProcessor.MasstransitWorkflow
+namespace WorkflowProcessor.Bus
 {
     public class WorkflowMessageMassTransitProducer : IWorkflowMessageProducer
     {
@@ -12,19 +12,24 @@ namespace WorkflowProcessor.MasstransitWorkflow
             _bus = bus;
         }
 
-        public async Task SendStart(WorkflowStartMessage message)
+        public async Task SendStartAsync(WorkflowStartMessage message)
         {
             await _bus.Publish(message);
         }
 
-        public async Task SendFinish(WorkflowInstanceFinishMessage message)
+        public async Task SendFinishAsync(WorkflowInstanceFinishMessage message)
         {
             await _bus.Publish(message);
         }
 
-        public async Task SendExecuteNext(WorkflowExecuteStep message)
+        public async Task SendExecuteNextAsync(WorkflowExecuteStepMessage message)
         {
             await _bus.Publish(message);
+        }
+
+        public Task SendMessageAsync(IWorkflowMessage message)
+        {
+            throw new NotImplementedException();
         }
     }
 }

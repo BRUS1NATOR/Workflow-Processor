@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using WorkflowProcessor.Core;
 using WorkflowProcessor.Services;
 
@@ -12,16 +11,14 @@ namespace WorkflowProcessor.API.Controllers
         private readonly ILogger<WorkflowController> _logger;
 
         private readonly IWorkflowUserService _workflowUserService;
-        private readonly WorkflowContext _dbContext;
-        private readonly WorkflowExecutor _workflowManager;
+        private readonly WorkflowExecutor _workflowExecutor;
         private readonly WorkflowStorage _workflowStorage;
 
-        public WorkflowController(ILogger<WorkflowController> logger, IWorkflowUserService workflowUserService, WorkflowContext dbContext, WorkflowExecutor workflowManager, WorkflowStorage workflowStorage)
+        public WorkflowController(ILogger<WorkflowController> logger, IWorkflowUserService workflowUserService, WorkflowExecutor workflowManager, WorkflowStorage workflowStorage)
         {
             _logger = logger;
             _workflowUserService = workflowUserService;
-            _dbContext = dbContext;
-            _workflowManager = workflowManager;
+            _workflowExecutor = workflowManager;
             _workflowStorage = workflowStorage;
         }
 
@@ -61,7 +58,7 @@ namespace WorkflowProcessor.API.Controllers
             //{
             //    return Unauthorized();
             //}
-            var result = await _workflowManager.StartProcessAsync(workflow, userId);
+            var result = await _workflowExecutor.StartProcessAsync(workflow, userId);
             return Ok(result);
         }
     }

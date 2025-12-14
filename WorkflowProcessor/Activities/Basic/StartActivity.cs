@@ -1,6 +1,5 @@
 ﻿using WorkflowProcessor.Core;
 using WorkflowProcessor.Core.ExecutionResults;
-using WorkflowProcessor.Core.Step;
 using WorkflowProcessor.Core.WorkflowElement;
 using WorkflowProcessor.Persistance.Context;
 
@@ -31,6 +30,7 @@ namespace WorkflowProcessor.Activities.Basic
         }
     }
 
+    [ActivityType(BaseAcitivityType.StartActivity)]
     public class StartActivity<TContextData> : WorkflowElement<TContextData>
         where TContextData : IContextData, new()
     {

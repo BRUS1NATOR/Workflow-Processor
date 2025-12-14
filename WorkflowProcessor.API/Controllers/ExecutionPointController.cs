@@ -7,10 +7,10 @@ using WorkflowProcessor.Services;
 public class ExecutionPointController : ControllerBase
 {
     private readonly ILogger<BookmarkController> _logger;
-    private readonly WorkflowContext _dbContext;
+    private readonly WorkflowDbContext _dbContext;
     private readonly IWorkflowUserService _workflowUserService;
 
-    public ExecutionPointController(ILogger<BookmarkController> logger, WorkflowContext dbContext, WorkflowBookmarkService bookmarkService, IWorkflowUserService userService)
+    public ExecutionPointController(ILogger<BookmarkController> logger, WorkflowDbContext dbContext, WorkflowBookmarkService bookmarkService, IWorkflowUserService userService)
     {
         _logger = logger;
         _dbContext = dbContext;

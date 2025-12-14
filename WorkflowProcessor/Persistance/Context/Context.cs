@@ -21,7 +21,7 @@ namespace WorkflowProcessor.Persistance.Context
             this.JsonData = jsonData;
             if (!string.IsNullOrEmpty(jsonData))
             {
-                SetContextValueFromJson(JsonData);
+                SetContextDataFromJson(JsonData);
             }
         }
 
@@ -30,7 +30,7 @@ namespace WorkflowProcessor.Persistance.Context
             DataObject = data;
         }
 
-        public virtual void SetContextValueFromJson(string? jsonData)
+        public virtual void SetContextDataFromJson(string? jsonData)
         {
             if (jsonData is null)
             {
@@ -77,12 +77,12 @@ namespace WorkflowProcessor.Persistance.Context
         }
 
 
-        public virtual void SetContextValue(T data)
+        public virtual void SetContextData(T data)
         {
             Data = data;
         }
 
-        public override void SetContextValueFromJson(string? jsonData)
+        public override void SetContextDataFromJson(string? jsonData)
         {
             if (jsonData is null)
             {

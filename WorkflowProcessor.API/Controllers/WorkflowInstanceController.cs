@@ -14,11 +14,11 @@ namespace WorkflowProcessor.API.Controllers
         private readonly ILogger<WorkflowController> _logger;
 
         private readonly IWorkflowUserService _workflowUserService;
-        private readonly WorkflowContext _dbContext;
+        private readonly WorkflowDbContext _dbContext;
         private readonly WorkflowExecutor _workflowManager;
         private readonly WorkflowStorage _workflowStorage;
 
-        public WorkflowInstanceController(ILogger<WorkflowController> logger, IWorkflowUserService workflowUserService, WorkflowContext dbContext, WorkflowExecutor workflowManager, WorkflowStorage workflowStorage)
+        public WorkflowInstanceController(ILogger<WorkflowController> logger, IWorkflowUserService workflowUserService, WorkflowDbContext dbContext, WorkflowExecutor workflowManager, WorkflowStorage workflowStorage)
         {
             _logger = logger;
             _workflowUserService = workflowUserService;

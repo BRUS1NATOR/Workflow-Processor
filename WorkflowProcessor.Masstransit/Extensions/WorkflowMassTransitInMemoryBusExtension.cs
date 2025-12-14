@@ -1,6 +1,6 @@
 ﻿using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
-using WorkflowProcessor.MasstransitWorkflow;
+using WorkflowProcessor.Bus;
 
 namespace WorkflowProcessor.MassTransit.Extensions
 {

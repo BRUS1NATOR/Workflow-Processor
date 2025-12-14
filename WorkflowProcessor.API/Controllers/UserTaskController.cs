@@ -11,11 +11,11 @@ namespace WorkflowProcessor.API.Controllers
     public class UserTaskController : ControllerBase
     {
         private readonly ILogger<BookmarkController> _logger;
-        private readonly WorkflowContext _dbContext;
+        private readonly WorkflowDbContext _dbContext;
         private readonly WorkflowBookmarkService _bookmarkService;
         private readonly IWorkflowUserService _workflowUserService;
 
-        public UserTaskController(ILogger<BookmarkController> logger, WorkflowContext dbContext, WorkflowBookmarkService bookmarkService, IWorkflowUserService userService)
+        public UserTaskController(ILogger<BookmarkController> logger, WorkflowDbContext dbContext, WorkflowBookmarkService bookmarkService, IWorkflowUserService userService)
         {
             _logger = logger;
             _dbContext = dbContext;
