@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkflowProcessor", "Workfl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkflowProcessor.API", "WorkflowProcessor.API\WorkflowProcessor.API.csproj", "{7EA0D865-D17E-4AF2-A792-7FA48C97E892}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkflowProcessor.Console", "WorkflowProcessor.Console\WorkflowProcessor.Console.csproj", "{9B1F90E3-AD26-4973-AC3F-42A3B3098283}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkflowProcessor.MassTransit", "WorkflowProcessor.MassTransit\WorkflowProcessor.MassTransit.csproj", "{C317709A-6390-4F2A-9A45-CC7B574D10C7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkflowProcessor.Tests", "WorkflowProcessor.Tests\WorkflowProcessor.Tests.csproj", "{F9414E12-D724-4A50-A505-C5C1C5CD62B2}"
@@ -27,10 +25,6 @@ Global
 		{7EA0D865-D17E-4AF2-A792-7FA48C97E892}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7EA0D865-D17E-4AF2-A792-7FA48C97E892}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7EA0D865-D17E-4AF2-A792-7FA48C97E892}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9B1F90E3-AD26-4973-AC3F-42A3B3098283}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9B1F90E3-AD26-4973-AC3F-42A3B3098283}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9B1F90E3-AD26-4973-AC3F-42A3B3098283}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9B1F90E3-AD26-4973-AC3F-42A3B3098283}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C317709A-6390-4F2A-9A45-CC7B574D10C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C317709A-6390-4F2A-9A45-CC7B574D10C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C317709A-6390-4F2A-9A45-CC7B574D10C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
