@@ -9,7 +9,7 @@ Pros:
 https://deepwiki.com/BRUS1NATOR/Workflow-Processor
 
 ## Example
-![Visualization](images/workflow_example.drawio.png)
+![Visualization](images/workflow_example.deepwiki.png)
 ### Define context
 ```
 // Context data of process
