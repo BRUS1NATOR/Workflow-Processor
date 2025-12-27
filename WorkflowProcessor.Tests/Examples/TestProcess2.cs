@@ -9,12 +9,12 @@ using WorkflowProcessor.Tests.Examples;
 
 namespace WorkflowProcessor.Console.Examples
 {
-    [PolymorphicContext(typeof(Data2), "Data2")]
-    public class Data2 : IContextData
+    [PolymorphicContext(typeof(TestProcess2_Data), "TestProcess2_Data")]
+    public class TestProcess2_Data : IContextData
     {
         public long Varialbe { get; set; } = 0;
     }
-    public class TestProcess2 : WorkflowBuilder<Data2>
+    public class TestProcess2 : WorkflowBuilder<TestProcess2_Data>
     {
         public TestProcess2()
         {
@@ -28,11 +28,11 @@ namespace WorkflowProcessor.Console.Examples
             //
             var start = Step<StartActivity>();
             //
-            var logValue = Step<LogActivity<Data2>>(activity => activity.Log(context => "Variable value: " + context.Data.Varialbe));
+            var logValue = Step<LogActivity<TestProcess2_Data>>(activity => activity.Log(context => "Variable value: " + context.Data.Varialbe));
             //
-            var increaseValueByOne = Step<CodeActivity<Data2>>(activity => activity.Code(context => { context.Data.Varialbe++; }));
+            var increaseValueByOne = Step<CodeActivity<TestProcess2_Data>>(activity => activity.Code(context => { context.Data.Varialbe++; }));
             var endCycle = Step<LogActivity>(activity => activity.Log("Variable value >= 5"));
-            var ifStatement = Step<If<Data2>>(activity =>
+            var ifStatement = Step<If<TestProcess2_Data>>(activity =>
             {
                 activity.SetCondition(context => context.Data.Varialbe >= 5);
             });
@@ -42,8 +42,8 @@ namespace WorkflowProcessor.Console.Examples
                 {
                     new Connection(start, logValue),
                     new Connection(logValue, ifStatement),
-                        new ConditionalConnection<Data2, bool>(ifStatement, endCycle, true),
-                        new ConditionalConnection<Data2, bool>(ifStatement, increaseValueByOne, false),
+                        new ConditionalConnection<TestProcess2_Data, bool>(ifStatement, endCycle, true),
+                        new ConditionalConnection<TestProcess2_Data, bool>(ifStatement, increaseValueByOne, false),
                     new Connection(increaseValueByOne, logValue),
                     new Connection(endCycle, endActivity)
                 };

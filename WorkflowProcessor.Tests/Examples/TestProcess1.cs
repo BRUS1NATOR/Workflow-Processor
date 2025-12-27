@@ -9,8 +9,8 @@ using WorkflowProcessor.Tests.Examples;
 
 namespace WorkflowProcessor.Console.Examples
 {
-    [PolymorphicContext(typeof(Data1), "Data1")]
-    public class Data1 : IContextData
+    [PolymorphicContext(typeof(TestProcess1_Data), "TestProcess1_Data")]
+    public class TestProcess1_Data : IContextData
     {
         public string NameVariable { get; set; } = "";
 
@@ -18,7 +18,7 @@ namespace WorkflowProcessor.Console.Examples
         public bool IsStartStepCompleted { get; set; } = false;
     }
 
-    public class TestProcess1 : WorkflowBuilder<Data1>
+    public class TestProcess1 : WorkflowBuilder<TestProcess1_Data>
     {
         public TestProcess1()
         {
@@ -29,10 +29,10 @@ namespace WorkflowProcessor.Console.Examples
         public override Workflow Build()
         {
             //
-            var start = Step<StartActivity<Data1>>(x => x.Code(exec => exec.Data.IsStartStepCompleted = true));
+            var start = Step<StartActivity<TestProcess1_Data>>(x => x.Code(exec => exec.Data.IsStartStepCompleted = true));
             var helloWorld = Step<LogActivity>(activity => activity.Log("Hello world!"));
 
-            var setVariableValue = Step<CodeActivity<Data1>>((activity) =>
+            var setVariableValue = Step<CodeActivity<TestProcess1_Data>>((activity) =>
             {
                 activity.Code(context => { context.Data.NameVariable = "Alex"; });
             });
@@ -40,12 +40,12 @@ namespace WorkflowProcessor.Console.Examples
             var statementIsTrue = Step<LogActivity>(activity => activity.Log("Your name is Alex!"));
             var statementIsFalse = Step<LogActivity>(activity => activity.Log("Your name is not Alex!"));
 
-            var ifStatement = Step<If<Data1>>(activity =>
+            var ifStatement = Step<If<TestProcess1_Data>>(activity =>
             {
                 activity.SetCondition(context => context.Data.NameVariable == "Alex");
             });
 
-            var helloUserActivity = Step<CodeActivity<Data1>>((activity) =>
+            var helloUserActivity = Step<CodeActivity<TestProcess1_Data>>((activity) =>
             {
                 activity.Code(x => { System.Console.WriteLine(x.Data.NameVariable); });
             });
@@ -57,8 +57,8 @@ namespace WorkflowProcessor.Console.Examples
                     new Connection(setVariableValue, helloUserActivity),
 
                     new Connection(helloUserActivity, ifStatement),
-                        new ConditionalConnection<Data1, bool>(ifStatement, statementIsTrue, true),
-                        new ConditionalConnection<Data1, bool>(ifStatement, statementIsFalse, false),
+                        new ConditionalConnection<TestProcess1_Data, bool>(ifStatement, statementIsTrue, true),
+                        new ConditionalConnection<TestProcess1_Data, bool>(ifStatement, statementIsFalse, false),
 
                     new Connection(statementIsTrue, endActivity),
                     new Connection(statementIsFalse, endActivity)

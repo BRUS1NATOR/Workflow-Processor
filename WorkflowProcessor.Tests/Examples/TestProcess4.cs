@@ -8,12 +8,12 @@ using WorkflowProcessor.Tests.Examples;
 
 namespace WorkflowProcessor.Console.Examples
 {
-    [PolymorphicContext(typeof(Data4), "Data4")]
-    public class Data4 : IContextData
+    [PolymorphicContext(typeof(TestProcess4_Data), "TestProcess4_Data")]
+    public class TestProcess4_Data : IContextData
     {
         public long Varialbe { get; set; } = 0;
     }
-    public class TestProcess4 : WorkflowBuilder<Data4>
+    public class TestProcess4 : WorkflowBuilder<TestProcess4_Data>
     {
         public TestProcess4()
         {
@@ -31,15 +31,15 @@ namespace WorkflowProcessor.Console.Examples
                 });
             });
             //
-            var logValue = Step<LogActivity<Data4>>(activity => activity.Log(context => "Log1: " + context.Data.Varialbe));
-            var logValue2 = Step<LogActivity<Data4>>(activity => activity.Log(context => "Log2: " + context.Data.Varialbe));
+            var logValue = Step<LogActivity<TestProcess4_Data>>(activity => activity.Log(context => "Log1: " + context.Data.Varialbe));
+            var logValue2 = Step<LogActivity<TestProcess4_Data>>(activity => activity.Log(context => "Log2: " + context.Data.Varialbe));
             //
-            var subProcess = Step<SubprocessActivity<Data4, TestProcess2, Data2>>(activity =>
+            var subProcess = Step<SubprocessActivity<TestProcess4_Data, TestProcess2, TestProcess2_Data>>(activity =>
             {
                 activity.SetBookmark(true);
                 activity.SetContextData(x =>
                 {
-                    return new Data2()
+                    return new TestProcess2_Data()
                     {
                         Varialbe = 1
                     };

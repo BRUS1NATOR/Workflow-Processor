@@ -15,7 +15,7 @@ namespace WorkflowProcessor.Services
             _logger = logger;
         }
 
-        public void AddWorkflow<T>() where T : WorkflowBuilder, new()
+        public Workflow AddWorkflow<T>() where T : WorkflowBuilder, new()
         {
             _logger.LogInformation($"Add workflow: {typeof(T)}");
             if (typeof(T).BaseType.IsGenericType)
@@ -29,7 +29,9 @@ namespace WorkflowProcessor.Services
                     }
                 }
             }
-            Workflows.Add(new T().Build());
+            var workflow = new T().Build();
+            Workflows.Add(workflow);
+            return workflow;
         }
 
 
