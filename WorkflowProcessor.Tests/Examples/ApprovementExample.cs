@@ -6,7 +6,7 @@ using WorkflowProcessor.Core.Connections.Metadata;
 using WorkflowProcessor.Persistance.Context;
 using WorkflowProcessor.Persistance.Context.Json;
 
-namespace WorkflowProcessor.Console.Examples
+namespace WorkflowProcessor.Examples
 {
     [PolymorphicContext(typeof(ApprovementData), "ApprovementData")]
     public class ApprovementData : IContextData

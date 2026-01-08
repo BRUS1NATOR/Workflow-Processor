@@ -5,7 +5,7 @@ using WorkflowProcessor.Core.Connections;
 using WorkflowProcessor.Persistance.Context;
 using WorkflowProcessor.Persistance.Context.Json;
 
-namespace WorkflowProcessor.Console.Examples
+namespace WorkflowProcessor.Examples
 {
     [PolymorphicContext(typeof(Data5), "Data5")]
     public class Data5 : IContextData

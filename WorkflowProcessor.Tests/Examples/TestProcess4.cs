@@ -6,7 +6,7 @@ using WorkflowProcessor.Persistance.Context;
 using WorkflowProcessor.Persistance.Context.Json;
 using WorkflowProcessor.Tests.Examples;
 
-namespace WorkflowProcessor.Console.Examples
+namespace WorkflowProcessor.Examples
 {
     [PolymorphicContext(typeof(TestProcess4_Data), "TestProcess4_Data")]
     public class TestProcess4_Data : IContextData

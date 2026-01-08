@@ -1,4 +1,4 @@
-﻿using WorkflowProcessor.Console.Examples;
+﻿using WorkflowProcessor.Examples;
 using WorkflowProcessor.Core;
 using WorkflowProcessor.Tests.Examples;
 using WorkflowProcessor.Tests.Fixtures;
