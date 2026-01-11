@@ -1,0 +1,222 @@
+{
+  "initialContext": {
+    "data": {
+      "$type": "TestProcess1_Data",
+      "NameVariable": "",
+      "IsStartStepCompleted": false
+    }
+  },
+  "scheme": {
+    "elements": [
+      {
+        "activityId": "StartActivity_00",
+        "activityType": "StartActivity",
+        "baseActivityType": 1,
+        "Metadata": null
+      },
+      {
+        "activityId": "LogActivity_01",
+        "activityType": "LogActivity",
+        "baseActivityType": 22,
+        "Metadata": null
+      },
+      {
+        "activityId": "CodeActivity_02",
+        "activityType": "CodeActivity",
+        "baseActivityType": 23,
+        "Metadata": null
+      },
+      {
+        "activityId": "LogActivity_03",
+        "activityType": "LogActivity",
+        "baseActivityType": 22,
+        "Metadata": null
+      },
+      {
+        "activityId": "LogActivity_04",
+        "activityType": "LogActivity",
+        "baseActivityType": 22,
+        "Metadata": null
+      },
+      {
+        "activityId": "If_05",
+        "activityType": "If",
+        "baseActivityType": 10,
+        "Metadata": null
+      },
+      {
+        "activityId": "CodeActivity_06",
+        "activityType": "CodeActivity",
+        "baseActivityType": 23,
+        "Metadata": null
+      },
+      {
+        "activityId": "EndActivity_07",
+        "activityType": "EndActivity",
+        "baseActivityType": 2,
+        "Metadata": null
+      }
+    ],
+    "connection": [
+      {
+        "source": {
+          "activityId": "StartActivity_00",
+          "activityType": "StartActivity",
+          "baseActivityType": 1,
+          "Metadata": null
+        },
+        "target": {
+          "activityId": "LogActivity_01",
+          "activityType": "LogActivity",
+          "baseActivityType": 22,
+          "Metadata": null
+        },
+        "metadata": {
+          "displayName": null,
+          "connectionKey": null
+        }
+      },
+      {
+        "source": {
+          "activityId": "LogActivity_01",
+          "activityType": "LogActivity",
+          "baseActivityType": 22,
+          "Metadata": null
+        },
+        "target": {
+          "activityId": "CodeActivity_02",
+          "activityType": "CodeActivity",
+          "baseActivityType": 23,
+          "Metadata": null
+        },
+        "metadata": {
+          "displayName": null,
+          "connectionKey": null
+        }
+      },
+      {
+        "source": {
+          "activityId": "CodeActivity_02",
+          "activityType": "CodeActivity",
+          "baseActivityType": 23,
+          "Metadata": null
+        },
+        "target": {
+          "activityId": "CodeActivity_06",
+          "activityType": "CodeActivity",
+          "baseActivityType": 23,
+          "Metadata": null
+        },
+        "metadata": {
+          "displayName": null,
+          "connectionKey": null
+        }
+      },
+      {
+        "source": {
+          "activityId": "CodeActivity_06",
+          "activityType": "CodeActivity",
+          "baseActivityType": 23,
+          "Metadata": null
+        },
+        "target": {
+          "activityId": "If_05",
+          "activityType": "If",
+          "baseActivityType": 10,
+          "Metadata": null
+        },
+        "metadata": {
+          "displayName": null,
+          "connectionKey": null
+        }
+      },
+      {
+        "source": {
+          "activityId": "If_05",
+          "activityType": "If",
+          "baseActivityType": 10,
+          "Metadata": null
+        },
+        "target": {
+          "activityId": "LogActivity_03",
+          "activityType": "LogActivity",
+          "baseActivityType": 22,
+          "Metadata": null
+        },
+        "metadata": {
+          "displayName": null,
+          "connectionKey": null
+        }
+      },
+      {
+        "source": {
+          "activityId": "If_05",
+          "activityType": "If",
+          "baseActivityType": 10,
+          "Metadata": null
+        },
+        "target": {
+          "activityId": "LogActivity_04",
+          "activityType": "LogActivity",
+          "baseActivityType": 22,
+          "Metadata": null
+        },
+        "metadata": {
+          "displayName": null,
+          "connectionKey": null
+        }
+      },
+      {
+        "source": {
+          "activityId": "LogActivity_03",
+          "activityType": "LogActivity",
+          "baseActivityType": 22,
+          "Metadata": null
+        },
+        "target": {
+          "activityId": "EndActivity_07",
+          "activityType": "EndActivity",
+          "baseActivityType": 2,
+          "Metadata": null
+        },
+        "metadata": {
+          "displayName": null,
+          "connectionKey": null
+        }
+      },
+      {
+        "source": {
+          "activityId": "LogActivity_04",
+          "activityType": "LogActivity",
+          "baseActivityType": 22,
+          "Metadata": null
+        },
+        "target": {
+          "activityId": "EndActivity_07",
+          "activityType": "EndActivity",
+          "baseActivityType": 2,
+          "Metadata": null
+        },
+        "metadata": {
+          "displayName": null,
+          "connectionKey": null
+        }
+      }
+    ],
+    "start": {
+      "activityId": "StartActivity_00",
+      "activityType": "StartActivity",
+      "baseActivityType": 1,
+      "Metadata": null
+    },
+    "end": {
+      "activityId": "EndActivity_07",
+      "activityType": "EndActivity",
+      "baseActivityType": 2,
+      "Metadata": null
+    }
+  },
+  "name": "Example_Test_1",
+  "version": 1,
+  "isAllowedToRunFromWeb": false
+}

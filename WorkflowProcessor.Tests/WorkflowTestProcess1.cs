@@ -13,6 +13,17 @@ namespace WorkflowProcessor.Tests
         }
 
         [Fact]
+        public void IsPalindrome()
+        {
+            int x = 121;
+            var str = x.ToString();
+            var chars = str.ToArray();
+            var str_reverse = new String(chars.Reverse().ToArray());
+
+            Assert.Equal(str, str_reverse);
+        }
+
+        [Fact]
         public async Task Test1()
         {
             Workflow workflow = workflowFixture.WorkflowStorage.AddWorkflow<TestProcess1>();

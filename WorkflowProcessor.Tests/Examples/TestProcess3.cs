@@ -17,7 +17,7 @@ namespace WorkflowProcessor.Examples
     {
         public TestProcess3()
         {
-            Name = TestConsts.PROCESS_1;
+            Name = TestConsts.PROCESS_3;
             Version = 1;
         }
         public override Workflow Build()

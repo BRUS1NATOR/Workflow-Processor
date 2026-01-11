@@ -18,7 +18,7 @@ namespace WorkflowProcessor.Examples
     {
         public TestProcess2()
         {
-            Name = TestConsts.PROCESS_1;
+            Name = TestConsts.PROCESS_2;
             Version = 1;
             IsAllowedToRunFromWeb = true;
         }

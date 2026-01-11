@@ -1,0 +1,197 @@
+{
+  "initialContext": {
+    "data": {
+      "$type": "Data5",
+      "Varialbe": 0
+    }
+  },
+  "scheme": {
+    "elements": [
+      {
+        "activityId": "StartActivity_00",
+        "activityType": "StartActivity",
+        "baseActivityType": 1,
+        "Metadata": null
+      },
+      {
+        "activityId": "Log2",
+        "activityType": "LogActivity",
+        "baseActivityType": 22,
+        "Metadata": null
+      },
+      {
+        "activityId": "Log3",
+        "activityType": "LogActivity",
+        "baseActivityType": 22,
+        "Metadata": null
+      },
+      {
+        "activityId": "ParallelExclusiveGateway_01",
+        "activityType": "ParallelExclusiveGateway",
+        "baseActivityType": 11,
+        "Metadata": null
+      },
+      {
+        "activityId": "ParallelExclusiveGatewayEnd_02",
+        "activityType": "ParallelExclusiveGatewayEnd",
+        "baseActivityType": 12,
+        "Metadata": null
+      },
+      {
+        "activityId": "SleepActivity_03",
+        "activityType": "SleepActivity",
+        "baseActivityType": 21,
+        "Metadata": null
+      },
+      {
+        "activityId": "EndActivity_04",
+        "activityType": "EndActivity",
+        "baseActivityType": 2,
+        "Metadata": null
+      }
+    ],
+    "connection": [
+      {
+        "source": {
+          "activityId": "StartActivity_00",
+          "activityType": "StartActivity",
+          "baseActivityType": 1,
+          "Metadata": null
+        },
+        "target": {
+          "activityId": "ParallelExclusiveGateway_01",
+          "activityType": "ParallelExclusiveGateway",
+          "baseActivityType": 11,
+          "Metadata": null
+        },
+        "metadata": {
+          "displayName": null,
+          "connectionKey": null
+        }
+      },
+      {
+        "source": {
+          "activityId": "ParallelExclusiveGateway_01",
+          "activityType": "ParallelExclusiveGateway",
+          "baseActivityType": 11,
+          "Metadata": null
+        },
+        "target": {
+          "activityId": "Log2",
+          "activityType": "LogActivity",
+          "baseActivityType": 22,
+          "Metadata": null
+        },
+        "metadata": {
+          "displayName": null,
+          "connectionKey": null
+        }
+      },
+      {
+        "source": {
+          "activityId": "ParallelExclusiveGateway_01",
+          "activityType": "ParallelExclusiveGateway",
+          "baseActivityType": 11,
+          "Metadata": null
+        },
+        "target": {
+          "activityId": "SleepActivity_03",
+          "activityType": "SleepActivity",
+          "baseActivityType": 21,
+          "Metadata": null
+        },
+        "metadata": {
+          "displayName": null,
+          "connectionKey": null
+        }
+      },
+      {
+        "source": {
+          "activityId": "Log2",
+          "activityType": "LogActivity",
+          "baseActivityType": 22,
+          "Metadata": null
+        },
+        "target": {
+          "activityId": "ParallelExclusiveGatewayEnd_02",
+          "activityType": "ParallelExclusiveGatewayEnd",
+          "baseActivityType": 12,
+          "Metadata": null
+        },
+        "metadata": {
+          "displayName": null,
+          "connectionKey": null
+        }
+      },
+      {
+        "source": {
+          "activityId": "SleepActivity_03",
+          "activityType": "SleepActivity",
+          "baseActivityType": 21,
+          "Metadata": null
+        },
+        "target": {
+          "activityId": "Log3",
+          "activityType": "LogActivity",
+          "baseActivityType": 22,
+          "Metadata": null
+        },
+        "metadata": {
+          "displayName": null,
+          "connectionKey": null
+        }
+      },
+      {
+        "source": {
+          "activityId": "Log3",
+          "activityType": "LogActivity",
+          "baseActivityType": 22,
+          "Metadata": null
+        },
+        "target": {
+          "activityId": "ParallelExclusiveGatewayEnd_02",
+          "activityType": "ParallelExclusiveGatewayEnd",
+          "baseActivityType": 12,
+          "Metadata": null
+        },
+        "metadata": {
+          "displayName": null,
+          "connectionKey": null
+        }
+      },
+      {
+        "source": {
+          "activityId": "ParallelExclusiveGatewayEnd_02",
+          "activityType": "ParallelExclusiveGatewayEnd",
+          "baseActivityType": 12,
+          "Metadata": null
+        },
+        "target": {
+          "activityId": "EndActivity_04",
+          "activityType": "EndActivity",
+          "baseActivityType": 2,
+          "Metadata": null
+        },
+        "metadata": {
+          "displayName": null,
+          "connectionKey": null
+        }
+      }
+    ],
+    "start": {
+      "activityId": "StartActivity_00",
+      "activityType": "StartActivity",
+      "baseActivityType": 1,
+      "Metadata": null
+    },
+    "end": {
+      "activityId": "EndActivity_04",
+      "activityType": "EndActivity",
+      "baseActivityType": 2,
+      "Metadata": null
+    }
+  },
+  "name": "Example_Test_5",
+  "version": 1,
+  "isAllowedToRunFromWeb": true
+}

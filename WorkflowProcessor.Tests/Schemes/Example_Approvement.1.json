@@ -1,0 +1,271 @@
+{
+  "initialContext": {
+    "data": {
+      "$type": "ApprovementData",
+      "DocumentId": null,
+      "IsGroup1Approved": false,
+      "IsGroup2Approved": false
+    }
+  },
+  "scheme": {
+    "elements": [
+      {
+        "activityId": "StartActivity_00",
+        "activityType": "StartActivity",
+        "baseActivityType": 1,
+        "Metadata": null
+      },
+      {
+        "activityId": "CodeActivity_01",
+        "activityType": "CodeActivity",
+        "baseActivityType": 23,
+        "Metadata": null
+      },
+      {
+        "activityId": "If_02",
+        "activityType": "If",
+        "baseActivityType": 10,
+        "Metadata": null
+      },
+      {
+        "activityId": "If_03",
+        "activityType": "If",
+        "baseActivityType": 10,
+        "Metadata": null
+      },
+      {
+        "activityId": "approvementTask1",
+        "activityType": "UserActivity",
+        "baseActivityType": 24,
+        "Metadata": null
+      },
+      {
+        "activityId": "approvementTask2",
+        "activityType": "UserActivity",
+        "baseActivityType": 24,
+        "Metadata": null
+      },
+      {
+        "activityId": "EndActivity_04",
+        "activityType": "EndActivity",
+        "baseActivityType": 2,
+        "Metadata": null
+      }
+    ],
+    "connection": [
+      {
+        "source": {
+          "activityId": "StartActivity_00",
+          "activityType": "StartActivity",
+          "baseActivityType": 1,
+          "Metadata": null
+        },
+        "target": {
+          "activityId": "CodeActivity_01",
+          "activityType": "CodeActivity",
+          "baseActivityType": 23,
+          "Metadata": null
+        },
+        "metadata": {
+          "displayName": null,
+          "connectionKey": null
+        }
+      },
+      {
+        "source": {
+          "activityId": "CodeActivity_01",
+          "activityType": "CodeActivity",
+          "baseActivityType": 23,
+          "Metadata": null
+        },
+        "target": {
+          "activityId": "If_02",
+          "activityType": "If",
+          "baseActivityType": 10,
+          "Metadata": null
+        },
+        "metadata": {
+          "displayName": null,
+          "connectionKey": null
+        }
+      },
+      {
+        "source": {
+          "activityId": "If_02",
+          "activityType": "If",
+          "baseActivityType": 10,
+          "Metadata": null
+        },
+        "target": {
+          "activityId": "If_03",
+          "activityType": "If",
+          "baseActivityType": 10,
+          "Metadata": null
+        },
+        "metadata": {
+          "displayName": null,
+          "connectionKey": null
+        }
+      },
+      {
+        "source": {
+          "activityId": "If_02",
+          "activityType": "If",
+          "baseActivityType": 10,
+          "Metadata": null
+        },
+        "target": {
+          "activityId": "approvementTask1",
+          "activityType": "UserActivity",
+          "baseActivityType": 24,
+          "Metadata": null
+        },
+        "metadata": {
+          "displayName": null,
+          "connectionKey": null
+        }
+      },
+      {
+        "source": {
+          "activityId": "approvementTask1",
+          "activityType": "UserActivity",
+          "baseActivityType": 24,
+          "Metadata": null
+        },
+        "target": {
+          "activityId": "If_03",
+          "activityType": "If",
+          "baseActivityType": 10,
+          "Metadata": null
+        },
+        "metadata": {
+          "displayName": "\u0421\u043E\u0433\u043B\u0430\u0441\u043E\u0432\u0430\u0442\u044C",
+          "connectionKey": "approved"
+        }
+      },
+      {
+        "source": {
+          "activityId": "approvementTask1",
+          "activityType": "UserActivity",
+          "baseActivityType": 24,
+          "Metadata": null
+        },
+        "target": {
+          "activityId": "CodeActivity_01",
+          "activityType": "CodeActivity",
+          "baseActivityType": 23,
+          "Metadata": null
+        },
+        "metadata": {
+          "displayName": "\u041E\u0442\u043A\u0430\u0437\u0430\u0442\u044C",
+          "connectionKey": "disapproved"
+        }
+      },
+      {
+        "source": {
+          "activityId": "approvementTask1",
+          "activityType": "UserActivity",
+          "baseActivityType": 24,
+          "Metadata": null
+        },
+        "target": {
+          "activityId": "EndActivity_04",
+          "activityType": "EndActivity",
+          "baseActivityType": 2,
+          "Metadata": null
+        },
+        "metadata": {
+          "displayName": "\u041F\u0440\u0435\u0440\u0432\u0430\u0442\u044C",
+          "connectionKey": "cancel"
+        }
+      },
+      {
+        "source": {
+          "activityId": "If_03",
+          "activityType": "If",
+          "baseActivityType": 10,
+          "Metadata": null
+        },
+        "target": {
+          "activityId": "EndActivity_04",
+          "activityType": "EndActivity",
+          "baseActivityType": 2,
+          "Metadata": null
+        },
+        "metadata": {
+          "displayName": null,
+          "connectionKey": null
+        }
+      },
+      {
+        "source": {
+          "activityId": "If_03",
+          "activityType": "If",
+          "baseActivityType": 10,
+          "Metadata": null
+        },
+        "target": {
+          "activityId": "approvementTask2",
+          "activityType": "UserActivity",
+          "baseActivityType": 24,
+          "Metadata": null
+        },
+        "metadata": {
+          "displayName": null,
+          "connectionKey": null
+        }
+      },
+      {
+        "source": {
+          "activityId": "approvementTask2",
+          "activityType": "UserActivity",
+          "baseActivityType": 24,
+          "Metadata": null
+        },
+        "target": {
+          "activityId": "EndActivity_04",
+          "activityType": "EndActivity",
+          "baseActivityType": 2,
+          "Metadata": null
+        },
+        "metadata": {
+          "displayName": null,
+          "connectionKey": null
+        }
+      },
+      {
+        "source": {
+          "activityId": "approvementTask2",
+          "activityType": "UserActivity",
+          "baseActivityType": 24,
+          "Metadata": null
+        },
+        "target": {
+          "activityId": "CodeActivity_01",
+          "activityType": "CodeActivity",
+          "baseActivityType": 23,
+          "Metadata": null
+        },
+        "metadata": {
+          "displayName": null,
+          "connectionKey": null
+        }
+      }
+    ],
+    "start": {
+      "activityId": "StartActivity_00",
+      "activityType": "StartActivity",
+      "baseActivityType": 1,
+      "Metadata": null
+    },
+    "end": {
+      "activityId": "EndActivity_04",
+      "activityType": "EndActivity",
+      "baseActivityType": 2,
+      "Metadata": null
+    }
+  },
+  "name": "Example_Approvement",
+  "version": 1,
+  "isAllowedToRunFromWeb": true
+}
