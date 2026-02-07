@@ -12,64 +12,70 @@
         "activityId": "StartActivity_00",
         "activityType": "StartActivity",
         "baseActivityType": 1,
-        "Metadata": null
+        "metadata": null
       },
       {
         "activityId": "LogActivity_01",
         "activityType": "LogActivity",
         "baseActivityType": 22,
-        "Metadata": null
+        "metadata": null
       },
       {
         "activityId": "CodeActivity_02",
         "activityType": "CodeActivity",
         "baseActivityType": 23,
-        "Metadata": null
+        "metadata": null
       },
       {
-        "activityId": "LogActivity_03",
-        "activityType": "LogActivity",
-        "baseActivityType": 22,
-        "Metadata": null
+        "activityId": "CodeActivity_03",
+        "activityType": "CodeActivity",
+        "baseActivityType": 23,
+        "metadata": null
       },
       {
         "activityId": "LogActivity_04",
         "activityType": "LogActivity",
         "baseActivityType": 22,
-        "Metadata": null
+        "metadata": null
       },
       {
-        "activityId": "If_05",
+        "activityId": "LogActivity_05",
+        "activityType": "LogActivity",
+        "baseActivityType": 22,
+        "metadata": null
+      },
+      {
+        "activityId": "If_06",
         "activityType": "If",
         "baseActivityType": 10,
-        "Metadata": null
+        "metadata": null
       },
       {
-        "activityId": "CodeActivity_06",
+        "activityId": "CodeActivity_07",
         "activityType": "CodeActivity",
         "baseActivityType": 23,
-        "Metadata": null
+        "metadata": null
       },
       {
-        "activityId": "EndActivity_07",
+        "activityId": "EndActivity_08",
         "activityType": "EndActivity",
         "baseActivityType": 2,
-        "Metadata": null
+        "metadata": null
       }
     ],
-    "connection": [
+    "connections": [
       {
         "source": {
           "activityId": "StartActivity_00",
           "activityType": "StartActivity",
           "baseActivityType": 1,
-          "Metadata": null
+          "metadata": null
         },
         "target": {
           "activityId": "LogActivity_01",
           "activityType": "LogActivity",
           "baseActivityType": 22,
-          "Metadata": null
+          "metadata": null
         },
         "metadata": {
           "displayName": null,
@@ -81,13 +87,13 @@
           "activityId": "LogActivity_01",
           "activityType": "LogActivity",
           "baseActivityType": 22,
-          "Metadata": null
+          "metadata": null
         },
         "target": {
           "activityId": "CodeActivity_02",
           "activityType": "CodeActivity",
           "baseActivityType": 23,
-          "Metadata": null
+          "metadata": null
         },
         "metadata": {
           "displayName": null,
@@ -99,13 +105,13 @@
           "activityId": "CodeActivity_02",
           "activityType": "CodeActivity",
           "baseActivityType": 23,
-          "Metadata": null
+          "metadata": null
         },
         "target": {
-          "activityId": "CodeActivity_06",
+          "activityId": "CodeActivity_07",
           "activityType": "CodeActivity",
           "baseActivityType": 23,
-          "Metadata": null
+          "metadata": null
         },
         "metadata": {
           "displayName": null,
@@ -114,16 +120,16 @@
       },
       {
         "source": {
-          "activityId": "CodeActivity_06",
+          "activityId": "CodeActivity_07",
           "activityType": "CodeActivity",
           "baseActivityType": 23,
-          "Metadata": null
+          "metadata": null
         },
         "target": {
-          "activityId": "If_05",
+          "activityId": "If_06",
           "activityType": "If",
           "baseActivityType": 10,
-          "Metadata": null
+          "metadata": null
         },
         "metadata": {
           "displayName": null,
@@ -132,34 +138,16 @@
       },
       {
         "source": {
-          "activityId": "If_05",
+          "activityId": "If_06",
           "activityType": "If",
           "baseActivityType": 10,
-          "Metadata": null
-        },
-        "target": {
-          "activityId": "LogActivity_03",
-          "activityType": "LogActivity",
-          "baseActivityType": 22,
-          "Metadata": null
-        },
-        "metadata": {
-          "displayName": null,
-          "connectionKey": null
-        }
-      },
-      {
-        "source": {
-          "activityId": "If_05",
-          "activityType": "If",
-          "baseActivityType": 10,
-          "Metadata": null
+          "metadata": null
         },
         "target": {
           "activityId": "LogActivity_04",
           "activityType": "LogActivity",
           "baseActivityType": 22,
-          "Metadata": null
+          "metadata": null
         },
         "metadata": {
           "displayName": null,
@@ -168,16 +156,16 @@
       },
       {
         "source": {
-          "activityId": "LogActivity_03",
-          "activityType": "LogActivity",
-          "baseActivityType": 22,
-          "Metadata": null
+          "activityId": "If_06",
+          "activityType": "If",
+          "baseActivityType": 10,
+          "metadata": null
         },
         "target": {
-          "activityId": "EndActivity_07",
-          "activityType": "EndActivity",
-          "baseActivityType": 2,
-          "Metadata": null
+          "activityId": "LogActivity_05",
+          "activityType": "LogActivity",
+          "baseActivityType": 22,
+          "metadata": null
         },
         "metadata": {
           "displayName": null,
@@ -189,13 +177,31 @@
           "activityId": "LogActivity_04",
           "activityType": "LogActivity",
           "baseActivityType": 22,
-          "Metadata": null
+          "metadata": null
         },
         "target": {
-          "activityId": "EndActivity_07",
+          "activityId": "EndActivity_08",
           "activityType": "EndActivity",
           "baseActivityType": 2,
-          "Metadata": null
+          "metadata": null
+        },
+        "metadata": {
+          "displayName": null,
+          "connectionKey": null
+        }
+      },
+      {
+        "source": {
+          "activityId": "LogActivity_05",
+          "activityType": "LogActivity",
+          "baseActivityType": 22,
+          "metadata": null
+        },
+        "target": {
+          "activityId": "EndActivity_08",
+          "activityType": "EndActivity",
+          "baseActivityType": 2,
+          "metadata": null
         },
         "metadata": {
           "displayName": null,
@@ -207,13 +213,13 @@
       "activityId": "StartActivity_00",
       "activityType": "StartActivity",
       "baseActivityType": 1,
-      "Metadata": null
+      "metadata": null
     },
     "end": {
-      "activityId": "EndActivity_07",
+      "activityId": "EndActivity_08",
       "activityType": "EndActivity",
       "baseActivityType": 2,
-      "Metadata": null
+      "metadata": null
     }
   },
   "name": "Example_Test_1",

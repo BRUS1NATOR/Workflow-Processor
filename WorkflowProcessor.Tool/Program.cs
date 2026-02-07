@@ -11,7 +11,7 @@ internal class Program
 {
     static void Main(string[] args)
     {
-        // args = ["--project", "S:\\Workflow-Processor\\WorkflowProcessor.Tests"];
+        // args = ["--project", "Workflow-Processor\\WorkflowProcessor.Tests"];
         var result = Parser.Default.ParseArguments<JsonOptions>(args)
            .MapResult(
              (JsonOptions opts) => CreateJsonFiles(opts),
@@ -36,6 +36,11 @@ internal class Program
             { 
                 Directory.CreateDirectory(outputDirectory);
             }
+            Console.WriteLine($"Output directory is not set, using: {outputDirectory}");
+        }
+        else
+        {
+            Console.WriteLine($"Output directory is set to: {outputDirectory}");
         }
         csprojFile = Directory
             .GetFiles(projectDirectory, "*.csproj", SearchOption.TopDirectoryOnly)

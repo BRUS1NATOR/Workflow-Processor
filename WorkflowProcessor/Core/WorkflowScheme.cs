@@ -1,5 +1,4 @@
 ﻿using System.Text.Json.Serialization;
-using WorkflowProcessor.Activities.Gateways;
 using WorkflowProcessor.Core.Connections;
 using WorkflowProcessor.Core.Step;
 
@@ -13,7 +12,7 @@ namespace WorkflowProcessor.Core
         [JsonPropertyName("elements")]
         public List<WorkflowStep> Elements { get; set; } = new();
 
-        [JsonPropertyName("connection")]
+        [JsonPropertyName("connections")]
         public List<Connection> Connections { get; set; } = new();
 
         [JsonPropertyName("start")]

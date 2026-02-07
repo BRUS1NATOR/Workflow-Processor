@@ -13,58 +13,58 @@
         "activityId": "StartActivity_00",
         "activityType": "StartActivity",
         "baseActivityType": 1,
-        "Metadata": null
+        "metadata": null
       },
       {
         "activityId": "CodeActivity_01",
         "activityType": "CodeActivity",
         "baseActivityType": 23,
-        "Metadata": null
+        "metadata": null
       },
       {
         "activityId": "If_02",
         "activityType": "If",
         "baseActivityType": 10,
-        "Metadata": null
+        "metadata": null
       },
       {
         "activityId": "If_03",
         "activityType": "If",
         "baseActivityType": 10,
-        "Metadata": null
+        "metadata": null
       },
       {
         "activityId": "approvementTask1",
         "activityType": "UserActivity",
         "baseActivityType": 24,
-        "Metadata": null
+        "metadata": null
       },
       {
         "activityId": "approvementTask2",
         "activityType": "UserActivity",
         "baseActivityType": 24,
-        "Metadata": null
+        "metadata": null
       },
       {
         "activityId": "EndActivity_04",
         "activityType": "EndActivity",
         "baseActivityType": 2,
-        "Metadata": null
+        "metadata": null
       }
     ],
-    "connection": [
+    "connections": [
       {
         "source": {
           "activityId": "StartActivity_00",
           "activityType": "StartActivity",
           "baseActivityType": 1,
-          "Metadata": null
+          "metadata": null
         },
         "target": {
           "activityId": "CodeActivity_01",
           "activityType": "CodeActivity",
           "baseActivityType": 23,
-          "Metadata": null
+          "metadata": null
         },
         "metadata": {
           "displayName": null,
@@ -76,13 +76,13 @@
           "activityId": "CodeActivity_01",
           "activityType": "CodeActivity",
           "baseActivityType": 23,
-          "Metadata": null
+          "metadata": null
         },
         "target": {
           "activityId": "If_02",
           "activityType": "If",
           "baseActivityType": 10,
-          "Metadata": null
+          "metadata": null
         },
         "metadata": {
           "displayName": null,
@@ -94,13 +94,13 @@
           "activityId": "If_02",
           "activityType": "If",
           "baseActivityType": 10,
-          "Metadata": null
+          "metadata": null
         },
         "target": {
           "activityId": "If_03",
           "activityType": "If",
           "baseActivityType": 10,
-          "Metadata": null
+          "metadata": null
         },
         "metadata": {
           "displayName": null,
@@ -112,13 +112,13 @@
           "activityId": "If_02",
           "activityType": "If",
           "baseActivityType": 10,
-          "Metadata": null
+          "metadata": null
         },
         "target": {
           "activityId": "approvementTask1",
           "activityType": "UserActivity",
           "baseActivityType": 24,
-          "Metadata": null
+          "metadata": null
         },
         "metadata": {
           "displayName": null,
@@ -130,13 +130,13 @@
           "activityId": "approvementTask1",
           "activityType": "UserActivity",
           "baseActivityType": 24,
-          "Metadata": null
+          "metadata": null
         },
         "target": {
           "activityId": "If_03",
           "activityType": "If",
           "baseActivityType": 10,
-          "Metadata": null
+          "metadata": null
         },
         "metadata": {
           "displayName": "\u0421\u043E\u0433\u043B\u0430\u0441\u043E\u0432\u0430\u0442\u044C",
@@ -148,13 +148,13 @@
           "activityId": "approvementTask1",
           "activityType": "UserActivity",
           "baseActivityType": 24,
-          "Metadata": null
+          "metadata": null
         },
         "target": {
           "activityId": "CodeActivity_01",
           "activityType": "CodeActivity",
           "baseActivityType": 23,
-          "Metadata": null
+          "metadata": null
         },
         "metadata": {
           "displayName": "\u041E\u0442\u043A\u0430\u0437\u0430\u0442\u044C",
@@ -166,13 +166,13 @@
           "activityId": "approvementTask1",
           "activityType": "UserActivity",
           "baseActivityType": 24,
-          "Metadata": null
+          "metadata": null
         },
         "target": {
           "activityId": "EndActivity_04",
           "activityType": "EndActivity",
           "baseActivityType": 2,
-          "Metadata": null
+          "metadata": null
         },
         "metadata": {
           "displayName": "\u041F\u0440\u0435\u0440\u0432\u0430\u0442\u044C",
@@ -184,13 +184,13 @@
           "activityId": "If_03",
           "activityType": "If",
           "baseActivityType": 10,
-          "Metadata": null
+          "metadata": null
         },
         "target": {
           "activityId": "EndActivity_04",
           "activityType": "EndActivity",
           "baseActivityType": 2,
-          "Metadata": null
+          "metadata": null
         },
         "metadata": {
           "displayName": null,
@@ -202,13 +202,13 @@
           "activityId": "If_03",
           "activityType": "If",
           "baseActivityType": 10,
-          "Metadata": null
+          "metadata": null
         },
         "target": {
           "activityId": "approvementTask2",
           "activityType": "UserActivity",
           "baseActivityType": 24,
-          "Metadata": null
+          "metadata": null
         },
         "metadata": {
           "displayName": null,
@@ -220,13 +220,13 @@
           "activityId": "approvementTask2",
           "activityType": "UserActivity",
           "baseActivityType": 24,
-          "Metadata": null
+          "metadata": null
         },
         "target": {
           "activityId": "EndActivity_04",
           "activityType": "EndActivity",
           "baseActivityType": 2,
-          "Metadata": null
+          "metadata": null
         },
         "metadata": {
           "displayName": null,
@@ -238,13 +238,13 @@
           "activityId": "approvementTask2",
           "activityType": "UserActivity",
           "baseActivityType": 24,
-          "Metadata": null
+          "metadata": null
         },
         "target": {
           "activityId": "CodeActivity_01",
           "activityType": "CodeActivity",
           "baseActivityType": 23,
-          "Metadata": null
+          "metadata": null
         },
         "metadata": {
           "displayName": null,
@@ -256,13 +256,13 @@
       "activityId": "StartActivity_00",
       "activityType": "StartActivity",
       "baseActivityType": 1,
-      "Metadata": null
+      "metadata": null
     },
     "end": {
       "activityId": "EndActivity_04",
       "activityType": "EndActivity",
       "baseActivityType": 2,
-      "Metadata": null
+      "metadata": null
     }
   },
   "name": "Example_Approvement",

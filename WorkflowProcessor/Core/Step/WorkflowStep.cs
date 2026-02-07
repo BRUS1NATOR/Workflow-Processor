@@ -20,6 +20,7 @@ namespace WorkflowProcessor.Core.Step
         [JsonPropertyName("baseActivityType")]
         public virtual BaseAcitivityType BaseActivityType => BaseAcitivityType.Unknown;
 
+        [JsonPropertyName("metadata")]
         public WorkflowStepMetadata? Metadata { get; set; }
 
         public WorkflowStep()

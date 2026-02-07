@@ -11,58 +11,58 @@
         "activityId": "StartActivity_00",
         "activityType": "StartActivity",
         "baseActivityType": 1,
-        "Metadata": null
+        "metadata": null
       },
       {
         "activityId": "Log2",
         "activityType": "LogActivity",
         "baseActivityType": 22,
-        "Metadata": null
+        "metadata": null
       },
       {
         "activityId": "Log3",
         "activityType": "LogActivity",
         "baseActivityType": 22,
-        "Metadata": null
+        "metadata": null
       },
       {
         "activityId": "ParallelExclusiveGateway_01",
         "activityType": "ParallelExclusiveGateway",
         "baseActivityType": 11,
-        "Metadata": null
+        "metadata": null
       },
       {
         "activityId": "ParallelExclusiveGatewayEnd_02",
         "activityType": "ParallelExclusiveGatewayEnd",
         "baseActivityType": 12,
-        "Metadata": null
+        "metadata": null
       },
       {
         "activityId": "SleepActivity_03",
         "activityType": "SleepActivity",
         "baseActivityType": 21,
-        "Metadata": null
+        "metadata": null
       },
       {
         "activityId": "EndActivity_04",
         "activityType": "EndActivity",
         "baseActivityType": 2,
-        "Metadata": null
+        "metadata": null
       }
     ],
-    "connection": [
+    "connections": [
       {
         "source": {
           "activityId": "StartActivity_00",
           "activityType": "StartActivity",
           "baseActivityType": 1,
-          "Metadata": null
+          "metadata": null
         },
         "target": {
           "activityId": "ParallelExclusiveGateway_01",
           "activityType": "ParallelExclusiveGateway",
           "baseActivityType": 11,
-          "Metadata": null
+          "metadata": null
         },
         "metadata": {
           "displayName": null,
@@ -74,13 +74,13 @@
           "activityId": "ParallelExclusiveGateway_01",
           "activityType": "ParallelExclusiveGateway",
           "baseActivityType": 11,
-          "Metadata": null
+          "metadata": null
         },
         "target": {
           "activityId": "Log2",
           "activityType": "LogActivity",
           "baseActivityType": 22,
-          "Metadata": null
+          "metadata": null
         },
         "metadata": {
           "displayName": null,
@@ -92,13 +92,13 @@
           "activityId": "ParallelExclusiveGateway_01",
           "activityType": "ParallelExclusiveGateway",
           "baseActivityType": 11,
-          "Metadata": null
+          "metadata": null
         },
         "target": {
           "activityId": "SleepActivity_03",
           "activityType": "SleepActivity",
           "baseActivityType": 21,
-          "Metadata": null
+          "metadata": null
         },
         "metadata": {
           "displayName": null,
@@ -110,13 +110,13 @@
           "activityId": "Log2",
           "activityType": "LogActivity",
           "baseActivityType": 22,
-          "Metadata": null
+          "metadata": null
         },
         "target": {
           "activityId": "ParallelExclusiveGatewayEnd_02",
           "activityType": "ParallelExclusiveGatewayEnd",
           "baseActivityType": 12,
-          "Metadata": null
+          "metadata": null
         },
         "metadata": {
           "displayName": null,
@@ -128,13 +128,13 @@
           "activityId": "SleepActivity_03",
           "activityType": "SleepActivity",
           "baseActivityType": 21,
-          "Metadata": null
+          "metadata": null
         },
         "target": {
           "activityId": "Log3",
           "activityType": "LogActivity",
           "baseActivityType": 22,
-          "Metadata": null
+          "metadata": null
         },
         "metadata": {
           "displayName": null,
@@ -146,13 +146,13 @@
           "activityId": "Log3",
           "activityType": "LogActivity",
           "baseActivityType": 22,
-          "Metadata": null
+          "metadata": null
         },
         "target": {
           "activityId": "ParallelExclusiveGatewayEnd_02",
           "activityType": "ParallelExclusiveGatewayEnd",
           "baseActivityType": 12,
-          "Metadata": null
+          "metadata": null
         },
         "metadata": {
           "displayName": null,
@@ -164,13 +164,13 @@
           "activityId": "ParallelExclusiveGatewayEnd_02",
           "activityType": "ParallelExclusiveGatewayEnd",
           "baseActivityType": 12,
-          "Metadata": null
+          "metadata": null
         },
         "target": {
           "activityId": "EndActivity_04",
           "activityType": "EndActivity",
           "baseActivityType": 2,
-          "Metadata": null
+          "metadata": null
         },
         "metadata": {
           "displayName": null,
@@ -182,13 +182,13 @@
       "activityId": "StartActivity_00",
       "activityType": "StartActivity",
       "baseActivityType": 1,
-      "Metadata": null
+      "metadata": null
     },
     "end": {
       "activityId": "EndActivity_04",
       "activityType": "EndActivity",
       "baseActivityType": 2,
-      "Metadata": null
+      "metadata": null
     }
   },
   "name": "Example_Test_5",

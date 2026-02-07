@@ -11,52 +11,52 @@
         "activityId": "StartActivity_00",
         "activityType": "StartActivity",
         "baseActivityType": 1,
-        "Metadata": null
+        "metadata": null
       },
       {
         "activityId": "LogActivity_01",
         "activityType": "LogActivity",
         "baseActivityType": 22,
-        "Metadata": null
+        "metadata": null
       },
       {
         "activityId": "CodeActivity_02",
         "activityType": "CodeActivity",
         "baseActivityType": 23,
-        "Metadata": null
+        "metadata": null
       },
       {
         "activityId": "LogActivity_03",
         "activityType": "LogActivity",
         "baseActivityType": 22,
-        "Metadata": null
+        "metadata": null
       },
       {
         "activityId": "If_04",
         "activityType": "If",
         "baseActivityType": 10,
-        "Metadata": null
+        "metadata": null
       },
       {
         "activityId": "EndActivity_05",
         "activityType": "EndActivity",
         "baseActivityType": 2,
-        "Metadata": null
+        "metadata": null
       }
     ],
-    "connection": [
+    "connections": [
       {
         "source": {
           "activityId": "StartActivity_00",
           "activityType": "StartActivity",
           "baseActivityType": 1,
-          "Metadata": null
+          "metadata": null
         },
         "target": {
           "activityId": "LogActivity_01",
           "activityType": "LogActivity",
           "baseActivityType": 22,
-          "Metadata": null
+          "metadata": null
         },
         "metadata": {
           "displayName": null,
@@ -68,13 +68,13 @@
           "activityId": "LogActivity_01",
           "activityType": "LogActivity",
           "baseActivityType": 22,
-          "Metadata": null
+          "metadata": null
         },
         "target": {
           "activityId": "If_04",
           "activityType": "If",
           "baseActivityType": 10,
-          "Metadata": null
+          "metadata": null
         },
         "metadata": {
           "displayName": null,
@@ -86,13 +86,13 @@
           "activityId": "If_04",
           "activityType": "If",
           "baseActivityType": 10,
-          "Metadata": null
+          "metadata": null
         },
         "target": {
           "activityId": "LogActivity_03",
           "activityType": "LogActivity",
           "baseActivityType": 22,
-          "Metadata": null
+          "metadata": null
         },
         "metadata": {
           "displayName": null,
@@ -104,13 +104,13 @@
           "activityId": "If_04",
           "activityType": "If",
           "baseActivityType": 10,
-          "Metadata": null
+          "metadata": null
         },
         "target": {
           "activityId": "CodeActivity_02",
           "activityType": "CodeActivity",
           "baseActivityType": 23,
-          "Metadata": null
+          "metadata": null
         },
         "metadata": {
           "displayName": null,
@@ -122,13 +122,13 @@
           "activityId": "CodeActivity_02",
           "activityType": "CodeActivity",
           "baseActivityType": 23,
-          "Metadata": null
+          "metadata": null
         },
         "target": {
           "activityId": "LogActivity_01",
           "activityType": "LogActivity",
           "baseActivityType": 22,
-          "Metadata": null
+          "metadata": null
         },
         "metadata": {
           "displayName": null,
@@ -140,13 +140,13 @@
           "activityId": "LogActivity_03",
           "activityType": "LogActivity",
           "baseActivityType": 22,
-          "Metadata": null
+          "metadata": null
         },
         "target": {
           "activityId": "EndActivity_05",
           "activityType": "EndActivity",
           "baseActivityType": 2,
-          "Metadata": null
+          "metadata": null
         },
         "metadata": {
           "displayName": null,
@@ -158,13 +158,13 @@
       "activityId": "StartActivity_00",
       "activityType": "StartActivity",
       "baseActivityType": 1,
-      "Metadata": null
+      "metadata": null
     },
     "end": {
       "activityId": "EndActivity_05",
       "activityType": "EndActivity",
       "baseActivityType": 2,
-      "Metadata": null
+      "metadata": null
     }
   },
   "name": "Example_Test_2",

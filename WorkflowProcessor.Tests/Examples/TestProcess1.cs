@@ -1,4 +1,5 @@
-﻿using WorkflowProcessor.Activities;
+﻿using Microsoft.Extensions.Logging;
+using WorkflowProcessor.Activities;
 using WorkflowProcessor.Activities.Basic;
 using WorkflowProcessor.Activities.Gateways;
 using WorkflowProcessor.Core;
@@ -35,6 +36,10 @@ namespace WorkflowProcessor.Examples
             var setVariableValue = Step<CodeActivity<TestProcess1_Data>>((activity) =>
             {
                 activity.Code(context => { context.Data.NameVariable = "Alex"; });
+            });
+            var setVariableValue2 = Step<CodeActivity<TestProcess1_Data, ILogger<CodeActivity<TestProcess1_Data>>>>((activity) =>
+            {
+                activity.Code((context, logger) => { context.Data.NameVariable = "Alex"; logger.LogInformation("NameVariable has been set to Alex"); });
             });
 
             var statementIsTrue = Step<LogActivity>(activity => activity.Log("Your name is Alex!"));
